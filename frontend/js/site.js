@@ -72,30 +72,24 @@ async function loginUser(event) {
 }
 
 // ------------------------ Job Posting ------------------------
-async function submitEntrepreneurForm(event) {
+async function submitJobForm(event) {
     event.preventDefault();
 
-    const jobCategory = document.getElementById('jobCategory').value;
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
+    const job_title = document.getElementById('jobTitle').value; // updated variable name
     const location = document.getElementById('location').value;
-    const position = document.getElementById('position').value;
-    const salary = document.getElementById('salary').value;
-    const experience = document.getElementById('experience').value;
+    const company_name = document.getElementById('companyName').value; // updated variable name
+    const job_description = document.getElementById('jobDescription').value; // updated variable name
 
-    if (!name || !email || !position || !salary || !location) {
+    if (!job_title || !location || !company_name || !job_description) {
         alert("Please fill in all fields.");
         return;
     }
 
     const jobListing = {
-        jobCategory,
-        name,
-        email,
+        job_title,
         location,
-        position,
-        salary,
-        experience,
+        company_name,
+        job_description,
     };
 
     try {
@@ -134,7 +128,6 @@ async function fetchJobs() {
         }
 
         const jobListings = await response.json();
-
         const jobListContainer = document.getElementById('jobListContainer');
 
         if (jobListings.length === 0) {
@@ -144,11 +137,11 @@ async function fetchJobs() {
             jobListings.forEach(job => {
                 const jobElement = `
                     <div class="job-item">
-                        <h3>${job.position} (${job.salary})</h3>
+                        <h3>${job.job_title}</h3>
+                        <p><strong>Company:</strong> ${job.company_name}</p>
                         <p><strong>Location:</strong> ${job.location}</p>
-                        <p><strong>Experience Required:</strong> ${job.experience}</p>
-                        <p><strong>Description:</strong> ${job.description || 'No description available.'}</p>
-                        <button onclick="viewJobDetails('${job.email}')">View Details</button>
+                        <p><strong>Description:</strong> ${job.job_description || 'No description available.'}</p>
+                        <button onclick="viewJobDetails('${job.id}')">View Details</button>
                     </div>
                 `;
                 jobListContainer.innerHTML += jobElement;
@@ -165,5 +158,5 @@ async function fetchJobs() {
 // Add event listeners for form submissions and job fetching
 document.getElementById('registerForm')?.addEventListener('submit', registerUser);
 document.getElementById('loginForm')?.addEventListener('submit', loginUser);
-document.getElementById('entrepreneurForm')?.addEventListener('submit', submitEntrepreneurForm);
+document.getElementById('entrepreneurForm')?.addEventListener('submit', submitJobForm);
 document.addEventListener('DOMContentLoaded', fetchJobs); // Fetch jobs when the page loads

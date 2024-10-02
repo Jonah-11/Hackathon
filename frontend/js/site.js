@@ -116,7 +116,7 @@ async function submitJobForm(event) {
 // ------------------------ Fetch and Display Jobs ------------------------
 async function fetchJobs() {
     try {
-        const response = await fetch(`hackathon-production-c8fa.up.railway.app/jobListings`, {
+        const response = await fetch('https://hackathon-production-c8fa.up.railway.app/jobListings', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -130,10 +130,12 @@ async function fetchJobs() {
         const jobListings = await response.json();
         const jobListContainer = document.getElementById('jobListContainer');
 
+        // Clear existing jobs
+        jobListContainer.innerHTML = ''; 
+
         if (jobListings.length === 0) {
             jobListContainer.innerHTML = '<p>No jobs available.</p>';
         } else {
-            jobListContainer.innerHTML = ''; // Clear existing jobs
             jobListings.forEach(job => {
                 const jobElement = `
                     <div class="job-item">

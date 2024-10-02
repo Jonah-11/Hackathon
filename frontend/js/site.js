@@ -4,17 +4,12 @@ const API_URL = 'https://hackathon-production-c8fa.up.railway.app'; // Railway b
 async function registerUser(event) {
     event.preventDefault();
 
-    const userType = document.getElementById('user-type').value;
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    if (userType === '' || name === '' || email === '' || password === '') {
-        alert("Please fill in all fields.");
-        return;
-    }
-
-    const user = { user_type: userType, name, email, password };
+    const userData = {
+        user_type: document.getElementById('user_type').value,
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+    };
 
     try {
         const response = await fetch(`${API_URL}/register`, {
@@ -22,20 +17,25 @@ async function registerUser(event) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(user),
+            body: JSON.stringify(userData),
         });
 
         if (!response.ok) {
             throw new Error('Failed to register user.');
         }
 
-        alert('User registered successfully!');
-        document.getElementById('register-form').reset(); // Reset the form after successful registration
+        const result = await response.json();
+        console.log(result.message); // Handle success (e.g., show a success message)
+        alert('Registration successful!');
+        document.getElementById('registrationForm').reset(); // Clear the form after successful registration
     } catch (error) {
-        console.error('Error:', error);
-        alert('There was an error registering the user. Please try again.');
+        console.error('Error:', error.message); // Log the error message
+        alert('Registration failed: ' + error.message); // Display an alert to the user
     }
 }
+
+// Attach the registerUser function to the form's submit event
+document.getElementById('registrationForm').addEventListener('submit', registerUser);
 
 // ------------------------ User Login ------------------------
 async function loginUser(event) {
@@ -107,7 +107,8 @@ async function submitJobForm(event) {
         }
 
         alert('Job listing submitted successfully.');
-        document.getElementById('entrepreneurForm').reset();
+        document.getElementById('entrepreneurForm').reset(); // Reset form after submission
+        fetchJobs(); // Refresh job listings
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to post the job. Please try again.');
@@ -132,7 +133,7 @@ async function fetchJobs() {
         const jobListContainer = document.getElementById('jobListContainer');
 
         // Clear existing jobs
-        jobListContainer.innerHTML = ''; 
+        jobListContainer.innerHTML = '';
 
         if (jobListings.length === 0) {
             jobListContainer.innerHTML = '<p>No jobs available.</p>';
@@ -160,7 +161,7 @@ async function fetchJobs() {
 // ------------------------ Event Listeners ------------------------
 document.addEventListener('DOMContentLoaded', () => {
     // Add event listeners for form submissions
-    const registerForm = document.getElementById('register-form'); // Updated ID to match HTML
+    const registerForm = document.getElementById('registrationForm');
     const loginForm = document.getElementById('loginForm');
     const entrepreneurForm = document.getElementById('entrepreneurForm');
 

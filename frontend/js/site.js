@@ -1,11 +1,10 @@
 const API_URL = 'https://hackathon-production-c8fa.up.railway.app'; // Railway backend URL
 
-// ------------------------ User Registration ------------------------
 async function registerUser(event) {
     event.preventDefault();
 
     const userData = {
-        user_type: document.getElementById('user-type').value,
+        user_type: document.getElementById('user-type').value, // Corrected ID
         name: document.getElementById('name').value,
         email: document.getElementById('email').value,
         password: document.getElementById('password').value,
@@ -25,14 +24,22 @@ async function registerUser(event) {
         }
 
         const result = await response.json();
-        console.log(result.message); // Handle success (e.g., show a success message)
-        alert('Registration successful!');
-        document.getElementById('registrationForm').reset(); // Clear the form after successful registration
+        alert('Registration successful');
     } catch (error) {
-        console.error('Error:', error.message); // Log the error message
-        alert('Registration failed: ' + error.message); // Display an alert to the user
+        console.error('Error:', error.message);
+        alert('Registration failed: ' + error.message);
     }
 }
+
+// Ensure this code runs after the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const registerForm = document.getElementById('register-form');
+    if (registerForm) {
+        registerForm.addEventListener('submit', registerUser);
+    } else {
+        console.error("Registration form not found in the DOM.");
+    }
+});
 
 // Attach the registerUser function to the form's submit event
 document.getElementById('register-form').addEventListener('submit', registerUser);

@@ -1,4 +1,4 @@
-const API_URL = 'hackathon-production-c8fa.up.railway.app'; // Railway backend URL
+const API_URL = 'https://hackathon-production-c8fa.up.railway.app'; // Railway backend URL
 
 // ------------------------ User Registration ------------------------
 async function registerUser(event) {
@@ -71,70 +71,25 @@ async function loginUser(event) {
     }
 }
 
-// site.js
-
-document.getElementById("jobForm").addEventListener("submit", async function(event) {
-    event.preventDefault(); // Prevent form submission
-
-    // Collect form data
-    const jobTitle = document.getElementById("jobTitle").value;
-    const companyName = document.getElementById("companyName").value;
-    const location = document.getElementById("location").value;
-    const description = document.getElementById("description").value;
-
-    // Create job object
-    const jobData = {
-        jobTitle: jobTitle,
-        companyName: companyName,
-        location: location,
-        description: description
-    };
-
-    try {
-        // Send the job data to the backend
-        const response = await fetch('https://hackathon-production-c8fa.up.railway.app/jobListings', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jobData)
-        });
-
-        if (response.ok) {
-            // If the job is posted successfully
-            alert("Job posted successfully!");
-            document.getElementById("jobForm").reset(); // Reset the form
-        } else {
-            // If there was an error posting the job
-            const errorData = await response.json();
-            alert(`Error posting job: ${errorData.error}`);
-        }
-    } catch (error) {
-        console.error("Error posting job:", error);
-        alert("An error occurred while posting the job.");
-    }
-});
-
-
 // ------------------------ Job Posting ------------------------
 async function submitJobForm(event) {
     event.preventDefault();
 
-    const job_title = document.getElementById('jobTitle').value; // updated variable name
+    const jobTitle = document.getElementById('jobTitle').value;
     const location = document.getElementById('location').value;
-    const company_name = document.getElementById('companyName').value; // updated variable name
-    const job_description = document.getElementById('jobDescription').value; // updated variable name
+    const companyName = document.getElementById('companyName').value;
+    const description = document.getElementById('description').value;
 
-    if (!job_title || !location || !company_name || !job_description) {
+    if (!jobTitle || !location || !companyName || !description) {
         alert("Please fill in all fields.");
         return;
     }
 
     const jobListing = {
-        job_title,
+        job_title: jobTitle,
         location,
-        company_name,
-        job_description,
+        company_name: companyName,
+        job_description: description,
     };
 
     try {
@@ -161,7 +116,7 @@ async function submitJobForm(event) {
 // ------------------------ Fetch and Display Jobs ------------------------
 async function fetchJobs() {
     try {
-        const response = await fetch('https://hackathon-production-c8fa.up.railway.app/jobListings', {
+        const response = await fetch(`${API_URL}/jobListings`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -201,11 +156,25 @@ async function fetchJobs() {
     }
 }
 
-
-
 // ------------------------ Event Listeners ------------------------
-// Add event listeners for form submissions and job fetching
-document.getElementById('registerForm')?.addEventListener('submit', registerUser);
-document.getElementById('loginForm')?.addEventListener('submit', loginUser);
-document.getElementById('entrepreneurForm')?.addEventListener('submit', submitJobForm);
-document.addEventListener('DOMContentLoaded', fetchJobs); // Fetch jobs when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Add event listeners for form submissions
+    const registerForm = document.getElementById('registerForm');
+    const loginForm = document.getElementById('loginForm');
+    const entrepreneurForm = document.getElementById('entrepreneurForm');
+
+    if (registerForm) {
+        registerForm.addEventListener('submit', registerUser);
+    }
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', loginUser);
+    }
+
+    if (entrepreneurForm) {
+        entrepreneurForm.addEventListener('submit', submitJobForm);
+    }
+
+    // Fetch jobs when the page loads
+    fetchJobs();
+});

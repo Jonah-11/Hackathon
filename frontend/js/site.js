@@ -71,6 +71,51 @@ async function loginUser(event) {
     }
 }
 
+// site.js
+
+document.getElementById("jobForm").addEventListener("submit", async function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Collect form data
+    const jobTitle = document.getElementById("jobTitle").value;
+    const companyName = document.getElementById("companyName").value;
+    const location = document.getElementById("location").value;
+    const description = document.getElementById("description").value;
+
+    // Create job object
+    const jobData = {
+        jobTitle: jobTitle,
+        companyName: companyName,
+        location: location,
+        description: description
+    };
+
+    try {
+        // Send the job data to the backend
+        const response = await fetch('https://hackathon-production-c8fa.up.railway.app/jobListings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jobData)
+        });
+
+        if (response.ok) {
+            // If the job is posted successfully
+            alert("Job posted successfully!");
+            document.getElementById("jobForm").reset(); // Reset the form
+        } else {
+            // If there was an error posting the job
+            const errorData = await response.json();
+            alert(`Error posting job: ${errorData.error}`);
+        }
+    } catch (error) {
+        console.error("Error posting job:", error);
+        alert("An error occurred while posting the job.");
+    }
+});
+
+
 // ------------------------ Job Posting ------------------------
 async function submitJobForm(event) {
     event.preventDefault();

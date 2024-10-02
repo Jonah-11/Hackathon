@@ -16,6 +16,7 @@ const corsOptions = {
 // Apply CORS middleware
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Allow preflight requests
+app.use(express.json());
 
 app.use(bodyParser.json());
 app.use(express.static('public')); // Serve static files from the public directory
@@ -45,6 +46,7 @@ const db = initDb();
 
 // POST /register - Handle user registration
 app.post('/register', async (req, res) => {
+    console.log(req.body);
     const { user_type, name, email, password } = req.body;
 
     if (!user_type || !name || !email || !password) {

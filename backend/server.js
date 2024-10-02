@@ -16,11 +16,11 @@ app.use(express.static('public')); // Serve static files from the public directo
 
 // Database connection
 const dbConfig = {
-    host: 'junction.proxy.rlwy.net',
+    host: 'mysql.railway.internal',
     user: 'root',
-    password: 'your_password', // replace with your actual password
+    password: 'LaWBppidpBKGCFDmRIXeHNtYLIOUJYzz', 
     database: 'railway',
-    port: 40398,
+    port: 3306,
 };
 
 async function initDb() {

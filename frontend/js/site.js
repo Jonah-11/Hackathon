@@ -116,7 +116,7 @@ async function submitJobForm(event) {
 // ------------------------ Fetch and Display Jobs ------------------------
 async function fetchJobs() {
     try {
-        const response = await fetch(`${API_URL}/jobListings`, {
+        const response = await fetch(`hackathon-production-c8fa.up.railway.app/jobListings`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

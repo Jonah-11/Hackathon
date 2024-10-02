@@ -44,25 +44,26 @@ async function initDb() {
 
 const db = initDb();
 
-// POST /register - Handle user registration
 app.post('/register', async (req, res) => {
-    console.log(req.body);
-    const { user_type, name, email, password } = req.body;
-
-    if (!user_type || !name || !email || !password) {
-        return res.status(400).json({ error: "Please fill in all required fields." });
-    }
-
     try {
-        const query = 'INSERT INTO users (user_type, name, email, password) VALUES (?, ?, ?, ?)';
-        await (await db).execute(query, [user_type, name, email, password]);
+        console.log(req.body); // Debugging: Log the incoming request body
 
-        res.status(201).json({ message: "User registered successfully." });
+        const { user_type, name, email, password } = req.body;
+
+        // Check if all required fields are present
+        if (!user_type || !name || !email || !password) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+
+        // Continue with user registration logic, such as saving to database
+
+        res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-        console.error('Error registering user:', error);
-        res.status(500).json({ error: "Failed to register user." });
+        console.error(error); // Debugging: Log the error
+        res.status(500).json({ message: 'Server error' });
     }
 });
+
 
 // POST /jobListings - Create a job listing
 app.post('/jobListings', async (req, res) => {

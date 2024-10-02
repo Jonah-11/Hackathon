@@ -4,7 +4,7 @@ async function registerUser(event) {
     event.preventDefault();
 
     const userData = {
-        user_type: document.getElementById('user-type').value, // Corrected ID
+        user_type: document.getElementById('user_type').value, // Corrected ID
         name: document.getElementById('name').value,
         email: document.getElementById('email').value,
         password: document.getElementById('password').value,

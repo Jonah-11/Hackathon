@@ -35,7 +35,7 @@ async function registerUser(event) {
 }
 
 // Attach the registerUser function to the form's submit event
-document.getElementById('registrationForm').addEventListener('submit', registerUser);
+document.getElementById('registrater-form').addEventListener('submit', registerUser);
 
 // ------------------------ User Login ------------------------
 async function loginUser(event) {

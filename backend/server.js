@@ -1,5 +1,3 @@
-// backend.js
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -36,39 +34,26 @@ async function initDb() {
 
 const db = initDb();
 
-// POST /jobListings - Store a new job listing in the database
-app.post('/jobListings', async (req, res) => {
-    const { job_title, location, company_name, job_description } = req.body;
+// POST /register - Handle user registration
+app.post('/register', async (req, res) => {
+    const { user_type, name, email, password } = req.body;
 
-    if (!job_title || !location || !company_name || !job_description) {
+    if (!user_type || !name || !email || !password) {
         return res.status(400).json({ error: "Please fill in all required fields." });
     }
 
     try {
-        const query = 'INSERT INTO job_listing (job_title, location, company_name, job_description) VALUES (?, ?, ?, ?)';
-        await (await db).execute(query, [job_title, location, company_name, job_description]);
+        const query = 'INSERT INTO users (user_type, name, email, password) VALUES (?, ?, ?, ?)';
+        await (await db).execute(query, [user_type, name, email, password]);
 
-        res.status(201).json({ message: "Job listing posted successfully." });
+        res.status(201).json({ message: "User registered successfully." });
     } catch (error) {
-        console.error('Error posting job:', error);
-        res.status(500).json({ error: "Failed to post job." });
-    }
-});
-
-// GET /jobListings - Fetch all job listings from the database
-app.get('/jobListings', async (req, res) => {
-    try {
-        const query = 'SELECT * FROM job_listing ORDER BY created_at DESC';
-        const [rows] = await (await db).execute(query);
-
-        res.status(200).json(rows);
-    } catch (error) {
-        console.error('Error fetching job listings:', error);
-        res.status(500).json({ error: "Failed to fetch job listings." });
+        console.error('Error registering user:', error);
+        res.status(500).json({ error: "Failed to register user." });
     }
 });
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running on port:${PORT}`);
+    console.log(`Server is running on port: ${PORT}`);
 });

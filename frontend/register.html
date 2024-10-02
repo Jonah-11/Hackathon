@@ -77,5 +77,46 @@
     </footer>
 
     <script src="js/site.js"></script>
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form data
+            const userType = document.getElementById('user-type').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Prepare data to send
+            const userData = {
+                user_type: userType,
+                name,
+                email,
+                password,
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/register', { // Update the URL to your backend
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to register user');
+                }
+
+                const result = await response.json();
+                console.log('Registration successful:', result);
+                // Optionally redirect or show success message here
+
+            } catch (error) {
+                console.error('Error:', error);
+                // Handle error (show error message to user)
+            }
+        });
+    </script>
 </body>
 </html>

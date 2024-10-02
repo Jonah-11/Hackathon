@@ -6,18 +6,15 @@ const mysql = require('mysql2/promise'); // Ensure you have mysql2 installed
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+// CORS Middleware
 const corsOptions = {
     origin: 'https://workfinder.netlify.app', // Replace with your frontend URL
     methods: ['GET', 'POST', 'OPTIONS'], // Add other HTTP methods you need
     allowedHeaders: ['Content-Type', 'Authorization'], // Add any other headers you want to allow
 };
 
+// Apply CORS middleware
 app.use(cors(corsOptions));
-app.use(bodyParser.json());
-
-// Middleware
-app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public')); // Serve static files from the public directory
 
@@ -25,7 +22,7 @@ app.use(express.static('public')); // Serve static files from the public directo
 const dbConfig = {
     host: 'mysql.railway.internal',
     user: 'root',
-    password: 'LaWBppidpBKGCFDmRIXeHNtYLIOUJYzz', 
+    password: 'LaWBppidpBKGCFDmRIXeHNtYLIOUJYzz',
     database: 'railway',
     port: 3306,
 };
@@ -62,6 +59,7 @@ app.post('/register', async (req, res) => {
     }
 });
 
+// GET /jobListings - Fetch job listings
 app.get('/jobListings', async (req, res) => {
     try {
         const query = 'SELECT * FROM job_listing ORDER BY created_at DESC';
@@ -73,7 +71,6 @@ app.get('/jobListings', async (req, res) => {
         res.status(500).json({ error: "Failed to fetch job listings." });
     }
 });
-
 
 // Start the server
 app.listen(PORT, () => {

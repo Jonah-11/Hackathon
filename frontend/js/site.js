@@ -1,4 +1,4 @@
-const API_URL = 'https://hackathon-production-c8fa.up.railway.app'; // Railway backend URL
+const API_URL = 'hackathon-production-c8fa.up.railway.app'; // Railway backend URL
 
 // ------------------------ User Registration ------------------------
 async function registerUser(event) {

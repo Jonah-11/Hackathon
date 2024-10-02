@@ -121,7 +121,8 @@ async function fetchJobs() {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to fetch job listings.');
+            const errorText = await response.text(); // Read the response text for more details
+            throw new Error(`Failed to fetch job listings: ${response.status} ${response.statusText} - ${errorText}`);
         }
 
         const jobListings = await response.json();
@@ -149,7 +150,7 @@ async function fetchJobs() {
 
     } catch (error) {
         console.error('Error:', error);
-        alert('Failed to load job listings.');
+        alert('Failed to load job listings: ' + error.message);
     }
 }
 

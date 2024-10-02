@@ -4,16 +4,17 @@ const API_URL = 'https://hackathon-production-c8fa.up.railway.app'; // Railway b
 async function registerUser(event) {
     event.preventDefault();
 
+    const userType = document.getElementById('user-type').value;
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    if (name === '' || email === '' || password === '') {
+    if (userType === '' || name === '' || email === '' || password === '') {
         alert("Please fill in all fields.");
         return;
     }
 
-    const user = { name, email, password };
+    const user = { user_type: userType, name, email, password };
 
     try {
         const response = await fetch(`${API_URL}/register`, {
@@ -29,7 +30,7 @@ async function registerUser(event) {
         }
 
         alert('User registered successfully!');
-        document.getElementById('registerForm').reset();
+        document.getElementById('register-form').reset(); // Reset the form after successful registration
     } catch (error) {
         console.error('Error:', error);
         alert('There was an error registering the user. Please try again.');
@@ -159,7 +160,7 @@ async function fetchJobs() {
 // ------------------------ Event Listeners ------------------------
 document.addEventListener('DOMContentLoaded', () => {
     // Add event listeners for form submissions
-    const registerForm = document.getElementById('registerForm');
+    const registerForm = document.getElementById('register-form'); // Updated ID to match HTML
     const loginForm = document.getElementById('loginForm');
     const entrepreneurForm = document.getElementById('entrepreneurForm');
 

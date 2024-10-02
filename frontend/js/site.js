@@ -1,5 +1,6 @@
 const API_URL = 'https://hackathon-production-c8fa.up.railway.app'; // Railway backend URL
 
+// ------------------------ User Registration ------------------------
 async function registerUser(event) {
     event.preventDefault();
 
@@ -30,20 +31,6 @@ async function registerUser(event) {
         alert('Registration failed: ' + error.message);
     }
 }
-
-// Ensure this code runs after the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const registerForm = document.getElementById('register-form');
-    if (registerForm) {
-        registerForm.addEventListener('submit', registerUser);
-    } else {
-        console.error("Registration form not found in the DOM.");
-    }
-});
-
-// Attach the registerUser function to the form's submit event
-document.getElementById('register-form').addEventListener('submit', registerUser);
-document.getElementById('login-form').addEventListener('submit', loginUser);
 
 // ------------------------ User Login ------------------------
 async function loginUser(event) {
@@ -115,7 +102,7 @@ async function submitJobForm(event) {
         }
 
         alert('Job listing submitted successfully.');
-        document.getElementById('entrepreneurForm').reset(); // Reset form after submission
+        document.getElementById('jobForm').reset(); // Reset form after submission
         fetchJobs(); // Refresh job listings
     } catch (error) {
         console.error('Error:', error);
@@ -175,14 +162,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (registerForm) {
         registerForm.addEventListener('submit', registerUser);
+    } else {
+        console.error("Register form not found in the DOM.");
     }
 
     if (loginForm) {
         loginForm.addEventListener('submit', loginUser);
+    } else {
+        console.error("Login form not found in the DOM.");
     }
 
     if (entrepreneurForm) {
         entrepreneurForm.addEventListener('submit', submitJobForm);
+    } else {
+        console.error("Job form not found in the DOM.");
     }
 
     // Fetch jobs when the page loads

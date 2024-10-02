@@ -59,6 +59,26 @@ app.post('/register', async (req, res) => {
     }
 });
 
+app.post('/jobListings', async (req, res) => {
+    const { jobTitle, companyName, location, description } = req.body;
+
+    // Validate input
+    if (!jobTitle || !companyName || !location || !description) {
+        return res.status(400).json({ error: "Please fill in all required fields." });
+    }
+
+    try {
+        const query = 'INSERT INTO job_listing (job_title, company_name, location, description, created_at) VALUES (?, ?, ?, ?, NOW())';
+        await (await db).execute(query, [jobTitle, companyName, location, description]);
+        
+        res.status(201).json({ message: "Job listing created successfully." });
+    } catch (error) {
+        console.error('Error creating job listing:', error);
+        res.status(500).json({ error: "Failed to create job listing." });
+    }
+});
+
+
 // GET /jobListings - Fetch job listings
 app.get('/jobListings', async (req, res) => {
     try {

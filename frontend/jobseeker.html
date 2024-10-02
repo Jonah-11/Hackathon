@@ -15,7 +15,7 @@
     <header>
         <div class="container1">
             <div class="logo">
-                <a href="#"><img src="assets/images/logo.jpg" alt="Logo" height="50"/></a>
+                <a href="#"><img src="assets/images/logo.jpg" alt="Logo" height="50" /></a>
                 <p>Work Finder</p>
             </div>
             <nav>
@@ -31,6 +31,10 @@
     <!-- Job Postings Section -->
     <div class="form-wrapper">
         <h2>Latest Job Postings</h2>
+
+        <!-- Add the Search Jobs button -->
+        <button id="searchJobsBtn">Search Jobs</button>
+
         <div id="jobList" class="job-list">
             <!-- Job postings will be dynamically added here -->
         </div>
@@ -82,6 +86,45 @@
             });
         };
 
+        // Function to fetch jobs from the backend
+        async function fetchJobs() {
+            try {
+                const response = await fetch('/jobs'); // Ensure this endpoint matches your backend route
+                if (!response.ok) {
+                    throw new Error('Error: Failed to fetch job listings.');
+                }
+
+                const jobs = await response.json();
+                const jobList = document.getElementById('jobList');
+                jobList.innerHTML = ''; // Clear any existing job listings
+
+                if (jobs.length === 0) {
+                    jobList.innerHTML = '<p>No jobs found.</p>';
+                    return;
+                }
+
+                // Display jobs in the jobList div
+                jobs.forEach(job => {
+                    const jobItem = document.createElement('div');
+                    jobItem.classList.add('job-item');
+                    jobItem.innerHTML = `
+                        <h3>${job.position}</h3>
+                        <p>Company: ${job.companyName}</p>
+                        <p>Category: ${job.jobCategory}</p>
+                        <p>Description: ${job.jobDescription}</p>
+                        <button type="button" onclick="applyForJob('${job.position}')">Apply Now</button>
+                    `;
+                    jobList.appendChild(jobItem);
+                });
+            } catch (error) {
+                console.error(error);
+                alert('Failed to load jobs. Please try again later.');
+            }
+        }
+
+        // Add event listener to the Search Jobs button
+        document.getElementById('searchJobsBtn').addEventListener('click', fetchJobs);
+
         // Function to handle job application
         function applyForJob(jobTitle) {
             const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -101,7 +144,7 @@
         }
     </script>
 
-  `<script src="js/site.js" ></script>
+    <script src="js/site.js"></script>
 </body>
 
 </html>

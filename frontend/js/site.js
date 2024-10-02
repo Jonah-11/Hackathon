@@ -154,6 +154,8 @@ async function fetchJobs() {
     }
 }
 
+
+
 // ------------------------ Event Listeners ------------------------
 // Add event listeners for form submissions and job fetching
 document.getElementById('registerForm')?.addEventListener('submit', registerUser);

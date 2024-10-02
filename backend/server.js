@@ -18,7 +18,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.static('public')); // Serve static files from the public directory
 
-// Database connection
+// Database connection configuration
 const dbConfig = {
     host: 'mysql.railway.internal',
     user: 'root',
@@ -27,6 +27,7 @@ const dbConfig = {
     port: 3306,
 };
 
+// Initialize database connection
 async function initDb() {
     try {
         const connection = await mysql.createConnection(dbConfig);
@@ -59,18 +60,19 @@ app.post('/register', async (req, res) => {
     }
 });
 
+// POST /jobListings - Create a job listing
 app.post('/jobListings', async (req, res) => {
-    const { jobTitle, companyName, location, description } = req.body;
+    const { job_title, company_name, location, job_description } = req.body;
 
     // Validate input
-    if (!jobTitle || !companyName || !location || !description) {
+    if (!job_title || !company_name || !location || !job_description) {
         return res.status(400).json({ error: "Please fill in all required fields." });
     }
 
     try {
-        const query = 'INSERT INTO job_listing (job_title, company_name, location, description, created_at) VALUES (?, ?, ?, ?, NOW())';
-        await (await db).execute(query, [jobTitle, companyName, location, description]);
-        
+        const query = 'INSERT INTO job_listings (job_title, company_name, job_description, location, created_at) VALUES (?, ?, ?, ?, NOW())';
+        await (await db).execute(query, [job_title, company_name, job_description, location]);
+
         res.status(201).json({ message: "Job listing created successfully." });
     } catch (error) {
         console.error('Error creating job listing:', error);
@@ -78,11 +80,10 @@ app.post('/jobListings', async (req, res) => {
     }
 });
 
-
 // GET /jobListings - Fetch job listings
 app.get('/jobListings', async (req, res) => {
     try {
-        const query = 'SELECT * FROM job_listing ORDER BY created_at DESC';
+        const query = 'SELECT * FROM job_listings ORDER BY created_at DESC';
         const [rows] = await (await db).execute(query);
 
         res.status(200).json(rows);

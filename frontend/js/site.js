@@ -87,8 +87,8 @@ async function submitJobForm(event) {
 
     const jobListing = {
         job_title: jobTitle,
-        location,
         company_name: companyName,
+        location,
         job_description: description,
     };
 

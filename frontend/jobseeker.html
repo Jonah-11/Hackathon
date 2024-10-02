@@ -1,34 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Seeker - Find a Job</title>
+    <title>Entrepreneur Hub - Job Seeker</title>
     <link rel="stylesheet" href="css/jobseeker.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
+
+    <!-- Header Section -->
     <header>
-        <h1>Find a Job</h1>
+        <div class="container1">
+            <div class="logo">
+                <a href="#"><img src="assets/images/logo.jpg" alt="Logo" height="50"/></a>
+                <p>Work Finder</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="status.html">Status</a></li>
+                    <li><a href="register.html">Register</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <form id="job-seeker-form">
-        <label for="job-category">Select Job Category:</label>
-        <select id="job-category" name="job-category" required>
-            <option value="">Select a category</option>
-            <option value="IT">IT</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Finance">Finance</option>
-            <option value="Healthcare">Healthcare</option>
-            <option value="Construction">Construction</option>
-            <option value="Education">Education</option>
-            <option value="Manufacturing">Manufacturing</option>
-        </select>
+    <!-- Job Postings Section -->
+    <div class="form-wrapper">
+        <h2>Latest Job Postings</h2>
+        <div id="jobList" class="job-list">
+            <!-- Job postings will be dynamically added here -->
+        </div>
+    </div>
 
-        <button type="submit">Search Jobs</button>
-    </form>
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>We envision a future where everyone is connected to a job suitable to his/her respective skills.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Email: info@workfinder.com<br>Phone: +254 799 610782</p>
+            </div>
+        </div>
+        <div class="social-icons">
+            <h4>Follow Us On:</h4>
+            <div class="icon-container">
+                <a href="https://twitter.com/knightdale38085" target="_blank" class="twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=100080257234206" target="_blank" class="facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://wa.me/+254799610782" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/in/jonathan-edwards-147541318/" target="_blank" class="linkedin"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+        <p>&copy; 2024 By Jonathan Edwards | All Rights Reserved</p>
+    </footer>
 
-    <div id="job-results"></div>
+    <!-- JavaScript to load job postings and handle applications -->
+    <script>
+        window.onload = function () {
+            // Retrieve job postings from local storage
+            const jobPostings = JSON.parse(localStorage.getItem('jobPostings')) || [];
+            const jobList = document.getElementById('jobList');
 
-    <script src="js/site.js"></script>
+            // Populate the job list
+            jobPostings.forEach(job => {
+                const jobItem = document.createElement('div');
+                jobItem.classList.add('job-item');
+                jobItem.innerHTML = `
+                    <h3>${job.jobTitle}</h3>
+                    <p>Company: ${job.companyName}</p>
+                    <p>Location: ${job.location}</p>
+                    <p>Description: ${job.description}</p>
+                    <button type="button" onclick="applyForJob('${job.jobTitle}')">Apply Now</button>
+                `;
+                jobList.appendChild(jobItem);
+            });
+        };
+
+        // Function to handle job application
+        function applyForJob(jobTitle) {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const username = localStorage.getItem('username');
+
+            if (!isLoggedIn) {
+                alert("You must log in or register before applying for a job.");
+                window.location.href = "login.html"; // Redirect to login page
+            } else {
+                // Save the application status
+                let applications = JSON.parse(localStorage.getItem('applications')) || [];
+                applications.push({ jobTitle, username, status: "Pending" });
+                localStorage.setItem('applications', JSON.stringify(applications));
+
+                alert(`You have applied for the ${jobTitle} job.`);
+            }
+        }
+    </script>
+
 </body>
+
 </html>

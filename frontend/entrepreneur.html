@@ -1,54 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrepreneur - Post a Job</title>
-    <link rel="stylesheet" href="css/entrepreneur.css">
+    <title>Entrepreneur Hub - Post a Job</title>
+    <link rel="stylesheet" href="css/entrepreneur.css"> <!-- General styles -->
+    <link rel="stylesheet" href="css/jobseeker.css"> <!-- Job seeker page styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
     <header>
-        <h1>Post a Job</h1>
+        <div class="container1">
+            <div class="logo">
+                <a href="#"><img src="assets/images/logo.jpg" alt="Logo" height="50"/></a>
+                <p>Work Finder</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="status.html">Status</a></li>
+                    <li><a href="jobseeker.html">Job-Seeker-Page</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <form id="entrepreneur-form">
-        <label for="job-category">Job Category:</label>
-        <select id="job-category" name="job-category" required>
-            <option value="">Select a category</option>
-            <option value="IT">IT</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Finance">Finance</option>
-            <option value="Healthcare">Healthcare</option>
-            <option value="Construction">Construction</option>
-            <option value="Education">Education</option>
-            <option value="Manufacturing">Manufacturing</option>
-        </select>
+    <!-- Job Posting Form for Employers -->
+    <div class="form-wrapper">
+        <h2>Post a Job</h2>
+        <form id="jobForm">
+            <label for="jobTitle">Job Title:</label>
+            <input type="text" id="jobTitle" name="jobTitle" required>
 
-        <label for="name">Your Name:</label>
-        <input type="text" id="name" name="name" required>
+            <label for="companyName">Company Name:</label>
+            <input type="text" id="companyName" name="companyName" required>
 
-        <label for="contact-email">Contact Email:</label>
-        <input type="email" id="contact-email" name="contact-email" required>
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
 
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" required>
+            <label for="description">Job Description:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
 
-        <label for="position">Job Position:</label>
-        <input type="text" id="position" name="position" required>
+            <button type="submit">Post Job</button>
+        </form>
+    </div>
 
-        <label for="salary-range">Salary Range:</label>
-        <input type="text" id="salary-range" name="salary-range" required>
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>We envision a future where everyone is connected to a job suitable to his/her respective skills.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Email: info@workfinder.com<br>Phone: +254 799 610782</p>
+            </div>
+        </div>
+        <div class="social-icons">
+            <h4>Follow Us On:</h4>
+            <div class="icon-container">
+                <a href="https://twitter.com/knightdale38085" target="_blank" class="twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=100080257234206" target="_blank" class="facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://wa.me/+254799610782" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/in/jonathan-edwards-147541318/" target="_blank" class="linkedin"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+        <p>&copy; 2024 By Jonathan Edwards | All Rights Reserved</p>
+    </footer>
 
-        <label for="experience">Years of Experience:</label>
-        <select id="experience" name="experience" required>
-            <option value="0-3">0-3 years</option>
-            <option value="4-7">4-7 years</option>
-            <option value="10+">10+ years</option>
-        </select>
+    <!-- JavaScript to handle job form submission -->
+    <script>
+        document.getElementById("jobForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            alert("Job posted successfully!");
+        });
+    </script>
 
-        <button type="submit">Post Job</button>
-    </form>
-
-    <script src="js/site.js"></script>
+    <!-- Font Awesome for social icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
+
 </html>

@@ -8,58 +8,205 @@ body {
 header {
     text-align: center;
     padding: 20px;
-    background-color: #4CAF50;
+    background-color: #2c3e50; /* Dark Blue for header */
     color: white;
 }
 
-.login-container {
-    width: 300px;
-    margin: 50px auto;
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    color: #333;
-    text-align: center;
-}
-
-form {
+section {
     display: flex;
-    flex-direction: column;
+    justify-content: space-around;
+    margin: 40px;
 }
 
-label {
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-input[type="email"], input[type="password"], select {
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
+.option {
+    background-color: white;
+    padding: 20px;
     border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
+    transition: transform 0.2s; /* Animation for hover effect */
+    width: 300px; /* Fixed width for uniformity */
 }
 
-button {
-    padding: 10px;
+.option:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+.option-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px; /* Rounded corners for images */
+}
+
+.option h2 {
+    color: #333;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
     background-color: #4CAF50;
     color: white;
-    border: none;
+    text-decoration: none;
     border-radius: 5px;
-    cursor: pointer;
 }
 
-button:hover {
+.btn:hover {
     background-color: #45a049;
 }
 
-p {
-    text-align: center;
+.container1 {
+    display: flex;
+    justify-content: space-between; /* Space between logo/title and navigation */
+    align-items: center;
+    padding: 10px 20px; /* Added padding for better spacing */
 }
 
-a {
-    color: #4CAF50;
+.logo img {
+    height: 50px;
+    margin-right: 10px; /* Space between logo and title */
+}
+
+.logo {
+    display: flex; /* Use flexbox to arrange items in a row */
+    align-items: center; /* Vertically center the items */
+}
+
+.logo img {
+    height: 50px; /* Keep the logo height */
+    margin-right: 10px; /* Add space between the logo and text */
+}
+
+.logo p {
+    margin: 0; /* Remove default margin for the paragraph */
+    font-size: 1.5em; /* Adjust font size if needed */
+    color: white; /* Set text color */
+    font-family: 'Dancing Script', cursive; /* Use your desired font */
+}
+
+nav {
+    margin-left: auto; /* Push the nav to the right */
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 15px; /* Space between navigation items */
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #f39c12; /* Golden color on hover */
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    margin: 40px;
+}
+
+.register-box {
+    background-color: white;
+    padding: 30px; /* Increased padding for better spacing */
+    border-radius: 10px; /* Rounded corners for the box */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    max-width: 400px; /* Limit width for the box */
+    width: 100%; /* Full width for small screens */
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%; /* Full width for inputs */
+    padding: 10px;
+    margin-bottom: 15px; /* Space below inputs */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px; /* Padding for the button */
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor on hover */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+    width: 100%; /* Full width for button */
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Footer Styles */
+footer {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 20px 0;
+    margin-top: 30px;
+    text-align: center; /* Center text for small screens */
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around; /* Space between sections evenly */
+    padding: 0 10%; /* Padding to create space from edges */
+}
+
+.footer-section {
+    flex: 1; /* Allow equal spacing */
+    min-width: 200px; /* Minimum width for better layout */
+    padding: 10px; /* Padding between footer sections */
+    background-color: rgba(44, 62, 80, 0.9); /* Slightly transparent background for visibility */
+}
+
+.social-icons {
+    display: flex;
+    flex-direction: column; /* Stack "Follow Us On" and icons vertically */
+    align-items: center; /* Center the heading */
+    margin-top: 10px;
+}
+
+.icon-container {
+    display: flex; /* Align icons in a row */
+    justify-content: center; /* Center icons horizontally */
+    margin-top: 5px; /* Space between heading and icons */
+}
+
+.social-icons a {
+    color: #fff;
+    margin: 0 15px; /* Spacing between icons */
+    font-size: 30px; /* Enlarged icons */
+    transition: transform 0.3s; /* Smooth transition for hover effect */
+}
+
+.social-icons a:hover {
+    color: #f39c12; /* Color change on hover */
+    transform: scale(1.2); /* Slightly enlarge icons on hover */
 }

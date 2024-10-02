@@ -6,19 +6,64 @@ body {
 }
 
 header {
-    background-color: #4CAF50;
-    color: white;
     text-align: center;
     padding: 20px;
+    background-color: #2c3e50; /* Dark Blue for header */
+    color: white;
 }
 
-.container {
-    width: 50%;
-    margin: 50px auto;
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.container1 {
+    display: flex;
+    justify-content: space-between; /* Space between logo/title and navigation */
+    align-items: center;
+    padding: 10px 20px; /* Added padding for better spacing */
+}
+
+.logo img {
+    height: 50px;
+    margin-right: 10px; /* Space between logo and title */
+}
+
+.logo {
+    display: flex; /* Use flexbox to arrange items in a row */
+    align-items: center; /* Vertically center the items */
+}
+
+.logo img {
+    height: 50px; /* Keep the logo height */
+    margin-right: 10px; /* Add space between the logo and text */
+}
+
+.logo p {
+    margin: 0; /* Remove default margin for the paragraph */
+    font-size: 1.5em; /* Adjust font size if needed */
+    color: white; /* Set text color */
+    font-family: 'Dancing Script', cursive; /* Use your desired font */
+}
+
+nav {
+    margin-left: auto; /* Push the nav to the right */
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 15px; /* Space between navigation items */
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #f39c12; /* Golden color on hover */
 }
 
 h2 {
@@ -72,4 +117,53 @@ button:hover {
     margin-bottom: 10px;
     border-radius: 5px;
     border: 1px solid #ddd;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 20px 0;
+    margin-top: 30px;
+    text-align: center; /* Center text for small screens */
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around; /* Space between sections evenly */
+    padding: 0 10%; /* Padding to create space from edges */
+    
+}
+
+.footer-section {
+    flex: 1; /* Allow equal spacing */
+    min-width: 200px; /* Minimum width for better layout */
+    padding: 10px; /* Padding between footer sections */
+    
+    background-color: rgba(44, 62, 80, 0.9); /* Slightly transparent background for visibility */
+}
+
+.social-icons {
+    display: flex;
+    flex-direction: column; /* Stack "Follow Us On" and icons vertically */
+    align-items: center; /* Center the heading */
+    margin-top: 10px;
+}
+
+.icon-container {
+    display: flex; /* Align icons in a row */
+    justify-content: center; /* Center icons horizontally */
+    margin-top: 5px; /* Space between heading and icons */
+}
+
+.social-icons a {
+    color: #fff;
+    margin: 0 15px; /* Spacing between icons */
+    font-size: 30px; /* Enlarged icons */
+    transition: transform 0.3s; /* Smooth transition for hover effect */
+}
+
+.social-icons a:hover {
+    color: #f39c12; /* Color change on hover */
+    transform: scale(1.2); /* Slightly enlarge icons on hover */
 }

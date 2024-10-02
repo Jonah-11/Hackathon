@@ -1,5 +1,3 @@
-// site.js
-
 const API_URL = 'hackathon-production-c8fa.up.railway.app'; // Replace with your actual backend API URL
 
 // Entrepreneur Form Submission

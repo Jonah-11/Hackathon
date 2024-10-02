@@ -1,40 +1,51 @@
+// backend.js
+
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
-const { Sequelize } = require('sequelize'); // Import Sequelize here
-const authRoutes = require('./routes/authRoutes');
-const jobRoutes = require('./routes/jobRoutes');
-require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-
-// Sequelize configuration
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    dialect: 'mysql',
-    logging: false, // Turn off SQL query logging, or set to true for debugging
-});
-
-// Test database connection
-sequelize.authenticate()
-    .then(() => console.log('Database connected...'))
-    .catch(err => console.error('Error connecting to the database:', err));
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(express.static('public')); // Serve static files from the public directory
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api', jobRoutes);
+// Path to the job postings file
+const jobPostingsFile = path.join(__dirname, 'jobPostings.json');
 
-// Sync Database and Start Server
-sequelize.sync({ force: false }).then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
+// Load existing job postings from the file
+function loadJobPostings() {
+    if (fs.existsSync(jobPostingsFile)) {
+        const data = fs.readFileSync(jobPostingsFile);
+        return JSON.parse(data);
+    }
+    return [];
+}
+
+// Endpoint to get all job postings
+app.get('/api/job-postings', (req, res) => {
+    const jobPostings = loadJobPostings();
+    res.json(jobPostings);
 });
 
-// Export the sequelize instance for use in other modules if necessary
-module.exports = sequelize;
+// Endpoint to post a new job
+app.post('/api/job-postings', (req, res) => {
+    const newJobPosting = req.body;
+
+    // Load existing job postings and add the new one
+    const jobPostings = loadJobPostings();
+    jobPostings.push(newJobPosting);
+
+    // Save updated job postings to the file
+    fs.writeFileSync(jobPostingsFile, JSON.stringify(jobPostings, null, 2));
+    res.status(201).json(newJobPosting); // Respond with the created job posting
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});

@@ -6,10 +6,104 @@ body {
 }
 
 header {
-    background-color: #4CAF50;
+    background-color: #2c3e50; /* Dark Blue for header */
     color: white;
     text-align: center;
     padding: 20px;
+}
+
+section {
+    display: flex;
+    justify-content: space-around;
+    margin: 40px;
+}
+
+.option {
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
+    transition: transform 0.2s; /* Animation for hover effect */
+    width: 300px; /* Fixed width for uniformity */
+}
+
+.option:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+.option-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px; /* Rounded corners for images */
+}
+
+.option h2 {
+    color: #333;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.container1 {
+    display: flex;
+    justify-content: space-between; /* Space between logo/title and navigation */
+    align-items: center;
+    padding: 10px 20px; /* Added padding for better spacing */
+}
+
+.logo img {
+    height: 50px;
+    margin-right: 10px; /* Space between logo and title */
+}
+
+.logo {
+    display: flex; /* Use flexbox to arrange items in a row */
+    align-items: center; /* Vertically center the items */
+}
+
+.logo p {
+    margin: 0; /* Remove default margin for the paragraph */
+    font-size: 1.5em; /* Adjust font size if needed */
+    color: white; /* Set text color */
+    font-family: 'Dancing Script', cursive; /* Use your desired font */
+}
+
+nav {
+    margin-left: auto; /* Push the nav to the right */
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 15px; /* Space between navigation items */
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #f39c12; /* Golden color on hover */
 }
 
 .container {
@@ -26,6 +120,10 @@ h2 {
     color: #333;
 }
 
+h3 {
+    text-align: center;
+    color: #333;
+}
 .status-table {
     width: 100%;
     border-collapse: collapse;
@@ -52,4 +150,107 @@ h2 {
 
 .status-table .declined {
     color: red;
+}
+
+/* Styles for the Login Section */
+#login-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px; /* Limit width of the login form */
+    margin: 0 auto; /* Center the form */
+    margin-top: 20px;
+}
+
+#login-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#login-section label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#login-section input[type="text"],
+#login-section input[type="password"] {
+    width: 100%; /* Full width for inputs */
+    padding: 10px;
+    margin-bottom: 15px; /* Space below inputs */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#error-message {
+    color: red; /* Error message color */
+    text-align: center; /* Center the error message */
+}
+
+/* Style for the login button */
+button {
+    padding: 10px 20px; /* Padding for the button */
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor on hover */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+button:focus {
+    outline: none; /* Remove outline on focus */
+}
+
+
+/* Footer Styles */
+footer {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 20px 0;
+    margin-top: 30px;
+    text-align: center; /* Center text for small screens */
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around; /* Space between sections evenly */
+    padding: 0 10%; /* Padding to create space from edges */
+}
+
+.footer-section {
+    flex: 1; /* Allow equal spacing */
+    min-width: 200px; /* Minimum width for better layout */
+    padding: 10px; /* Padding between footer sections */
+    background-color: rgba(44, 62, 80, 0.9); /* Slightly transparent background for visibility */
+}
+
+.social-icons {
+    display: flex;
+    flex-direction: column; /* Stack "Follow Us On" and icons vertically */
+    align-items: center; /* Center the heading */
+    margin-top: 10px;
+}
+
+.icon-container {
+    display: flex; /* Align icons in a row */
+    justify-content: center; /* Center icons horizontally */
+    margin-top: 5px; /* Space between heading and icons */
+}
+
+.social-icons a {
+    color: #fff;
+    margin: 0 15px; /* Spacing between icons */
+    font-size: 30px; /* Enlarged icons */
+    transition: transform 0.3s; /* Smooth transition for hover effect */
+}
+
+.social-icons a:hover {
+    color: #f39c12; /* Color change on hover */
+    transform: scale(1.2); /* Slightly enlarge icons on hover */
 }

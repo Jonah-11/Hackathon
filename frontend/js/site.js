@@ -33,11 +33,29 @@ async function registerUser(event) {
 }
 
 // ------------------------ User Login ------------------------
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('login-form');
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', loginUser);
+    } else {
+        console.error('Login form not found in the DOM.');
+    }
+});
+
 async function loginUser(event) {
     event.preventDefault();
 
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
+    const emailInput = document.getElementById('loginEmail');
+    const passwordInput = document.getElementById('loginPassword');
+
+    if (!emailInput || !passwordInput) {
+        alert('Login form elements are not available.');
+        return;
+    }
+
+    const email = emailInput.value;
+    const password = passwordInput.value;
 
     if (email === '' || password === '') {
         alert("Please enter both email and password.");
@@ -45,7 +63,7 @@ async function loginUser(event) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/login`, {
+        const response = await fetch('https://hackathon-production-c8fa.up.railway.app/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,8 +77,8 @@ async function loginUser(event) {
 
         const data = await response.json();
         alert('Logged in successfully');
-        localStorage.setItem('token', data.token); // Store token for authenticated requests
-        window.location.href = 'dashboard.html'; // Redirect to dashboard after successful login
+        localStorage.setItem('token', data.token);
+        window.location.href = 'dashboard.html'; // Redirect after successful login
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to log in. Please check your credentials.');

@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mysql = require('mysql2/promise'); // Ensure you have mysql2 installed
+const mysql = require('mysql2/promise');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,12 +13,9 @@ const corsOptions = {
     methods: ['GET', 'POST', 'OPTIONS'], // Allow necessary HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allow necessary headers
 };
-
-// Apply CORS middleware
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Allow preflight requests
 app.use(express.json());
-
 app.use(bodyParser.json());
 app.use(express.static('public')); // Serve static files from the public directory
 
@@ -30,40 +28,39 @@ const dbConfig = {
     port: 3306,
 };
 
-// Initialize database connection
-async function initDb() {
-    try {
-        const connection = await mysql.createConnection(dbConfig);
-        console.log('Connected to the database');
-        return connection;
-    } catch (error) {
-        console.error('Database connection failed:', error);
-        process.exit(1);
-    }
-}
+// Initialize database connection pool
+const dbPool = mysql.createPool(dbConfig);
 
-const db = initDb();
-
+// Registration handler function
 app.post('/register', async (req, res) => {
     try {
         console.log(req.body); // Debugging: Log the incoming request body
 
-        const { user_type, name, email, password } = req.body;
+        const { name, email, password, user_type } = req.body;
 
         // Check if all required fields are present
-        if (!user_type || !name || !email || !password) {
+        if (!name || !email || !password || !user_type) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        // Continue with user registration logic, such as saving to database
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Insert new user into the database
+        const query = 'INSERT INTO users (user_type, name, email, password) VALUES (?, ?, ?, ?)';
+        const connection = await dbPool.getConnection();
+        await connection.execute(query, [user_type, name, email, hashedPassword]);
+        connection.release(); // Release the connection back to the pool
+
+        console.log('New user created:', { user_type, name, email });
+        
+        // Return success response to the frontend
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-        console.error(error); // Debugging: Log the error
-        res.status(500).json({ message: 'Server error' });
+        console.error('Error inserting user into the database:', error);
+        res.status(500).json({ message: 'Failed to register user' });
     }
 });
-
 
 // POST /jobListings - Create a job listing
 app.post('/jobListings', async (req, res) => {
@@ -76,7 +73,9 @@ app.post('/jobListings', async (req, res) => {
 
     try {
         const query = 'INSERT INTO job_listings (job_title, company_name, job_description, location, created_at) VALUES (?, ?, ?, ?, NOW())';
-        await (await db).execute(query, [job_title, company_name, job_description, location]);
+        const connection = await dbPool.getConnection();
+        await connection.execute(query, [job_title, company_name, job_description, location]);
+        connection.release();
 
         res.status(201).json({ message: "Job listing created successfully." });
     } catch (error) {
@@ -89,7 +88,9 @@ app.post('/jobListings', async (req, res) => {
 app.get('/jobListings', async (req, res) => {
     try {
         const query = 'SELECT * FROM job_listings ORDER BY created_at DESC';
-        const [rows] = await (await db).execute(query);
+        const connection = await dbPool.getConnection();
+        const [rows] = await connection.execute(query);
+        connection.release();
 
         res.status(200).json(rows);
     } catch (error) {

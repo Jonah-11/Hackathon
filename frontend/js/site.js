@@ -35,7 +35,7 @@ async function registerUser(event) {
 }
 
 // Attach the registerUser function to the form's submit event
-document.getElementById('registrater-form').addEventListener('submit', registerUser);
+document.getElementById('register-form').addEventListener('submit', registerUser);
 
 // ------------------------ User Login ------------------------
 async function loginUser(event) {
@@ -161,9 +161,9 @@ async function fetchJobs() {
 // ------------------------ Event Listeners ------------------------
 document.addEventListener('DOMContentLoaded', () => {
     // Add event listeners for form submissions
-    const registerForm = document.getElementById('registrationForm');
-    const loginForm = document.getElementById('loginForm');
-    const entrepreneurForm = document.getElementById('entrepreneurForm');
+    const registerForm = document.getElementById('register-form');
+    const loginForm = document.getElementById('login-form');
+    const entrepreneurForm = document.getElementById('jobForm');
 
     if (registerForm) {
         registerForm.addEventListener('submit', registerUser);

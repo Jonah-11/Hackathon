@@ -2,10 +2,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql2/promise'); // Ensure you have mysql2 installed
-const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Middleware
+const corsOptions = {
+    origin: 'https://workfinder.netlify.app', // Replace with your frontend URL
+    methods: ['GET', 'POST', 'OPTIONS'], // Add other HTTP methods you need
+    allowedHeaders: ['Content-Type', 'Authorization'], // Add any other headers you want to allow
+};
+
+app.use(cors(corsOptions));
+app.use(bodyParser.json());
 
 // Middleware
 app.use(cors());
@@ -52,6 +61,19 @@ app.post('/register', async (req, res) => {
         res.status(500).json({ error: "Failed to register user." });
     }
 });
+
+app.get('/jobListings', async (req, res) => {
+    try {
+        const query = 'SELECT * FROM job_listing ORDER BY created_at DESC';
+        const [rows] = await (await db).execute(query);
+
+        res.status(200).json(rows);
+    } catch (error) {
+        console.error('Error fetching job listings:', error);
+        res.status(500).json({ error: "Failed to fetch job listings." });
+    }
+});
+
 
 // Start the server
 app.listen(PORT, () => {

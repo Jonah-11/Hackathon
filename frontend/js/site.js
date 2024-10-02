@@ -1,4 +1,12 @@
-const API_URL = 'hackathon-production-c8fa.up.railway.app'; // Replace with your Railway backend URL
+const API_URL = 'hackathon-production-c8fa.up.railway.app'; // Railway backend URL
+
+// ------------------------ Event Listeners ------------------------
+// Add event listeners for form submissions
+document.getElementById('registerForm')?.addEventListener('submit', registerUser);
+document.getElementById('loginForm')?.addEventListener('submit', loginUser);
+document.getElementById('entrepreneurForm')?.addEventListener('submit', submitEntrepreneurForm);
+document.addEventListener('DOMContentLoaded', fetchJobs);
+
 
 // ------------------------ User Registration ------------------------
 async function registerUser(event) {
@@ -119,8 +127,46 @@ async function submitEntrepreneurForm(event) {
     }
 }
 
-// ------------------------ Event Listeners ------------------------
-// Add event listeners for form submissions
-document.getElementById('registerForm')?.addEventListener('submit', registerUser);
-document.getElementById('loginForm')?.addEventListener('submit', loginUser);
-document.getElementById('entrepreneurForm')?.addEventListener('submit', submitEntrepreneurForm);
+// ------------------------ Fetch and Display Jobs ------------------------
+async function fetchJobs() {
+  try {
+      const response = await fetch(`${API_URL}/jobListings`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to fetch job listings.');
+      }
+
+      const jobListings = await response.json();
+
+      const jobListContainer = document.getElementById('jobListContainer');
+
+      if (jobListings.length === 0) {
+          jobListContainer.innerHTML = '<p>No jobs available.</p>';
+      } else {
+          jobListContainer.innerHTML = ''; // Clear existing jobs
+          jobListings.forEach(job => {
+              const jobElement = `
+                  <div class="job-item">
+                      <h3>${job.position} (${job.salary})</h3>
+                      <p><strong>Location:</strong> ${job.location}</p>
+                      <p><strong>Experience Required:</strong> ${job.experience}</p>
+                      <p><strong>Description:</strong> ${job.description || 'No description available.'}</p>
+                      <button onclick="viewJobDetails('${job.email}')">View Details</button>
+                  </div>
+              `;
+              jobListContainer.innerHTML += jobElement;
+          });
+      }
+
+  } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to load job listings.');
+  }
+}
+
+

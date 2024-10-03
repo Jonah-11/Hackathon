@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-
+    // Post a new job listing
     async function postJob(event) {
         event.preventDefault();
 
@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             const data = await response.json();
-
             if (response.ok) {
                 alert(data.message);
                 document.getElementById('jobForm').reset(); // Reset the form
@@ -43,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Register form handler
+    // Register a new user
     async function registerUser(event) {
         event.preventDefault();
 
@@ -57,15 +56,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    name: name,
-                    email: email,
-                    password: password,
-                }),
+                body: JSON.stringify({ name, email, password }),
             });
 
             const data = await response.json();
-
             if (response.ok) {
                 alert(data.message);
                 window.location.href = 'login.html'; // Redirect to login page on success
@@ -78,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Login form handler
+    // Login an existing user
     async function loginUser(event) {
         event.preventDefault();
 
@@ -91,14 +85,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    email: email,
-                    password: password,
-                }),
+                body: JSON.stringify({ email, password }),
             });
 
             const data = await response.json();
-
             if (response.ok) {
                 localStorage.setItem('token', data.token);
                 alert('Login successful!');
@@ -143,25 +133,29 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p><strong>Company:</strong> ${job.company_name}</p>
                     <p><strong>Location:</strong> ${job.location}</p>
                     <p><strong>Description:</strong> ${job.job_description}</p>
-                    <button class="apply-btn" data-email="${job.contact_email}" data-phone="${job.contact_phone}">Apply</button>
+                    <button class="apply-btn" data-job='${JSON.stringify(job)}'>Apply</button>
                 `;
                 jobList.appendChild(jobElement);
             });
 
             // Add event listener for Apply buttons
-            const applyButtons = document.querySelectorAll('.apply-btn');
-            applyButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const email = this.getAttribute('data-email');
-                    const phone = this.getAttribute('data-phone');
-                    alert(`Contact Email: ${email}\nContact Phone: ${phone}`);
-                });
-            });
-
+            addApplyButtonListeners();
         } catch (error) {
             console.error('Error fetching job listings:', error);
             alert('An error occurred while fetching job listings.');
         }
+    }
+
+    // Add event listeners to the apply buttons
+    function addApplyButtonListeners() {
+        const applyButtons = document.querySelectorAll('.apply-btn');
+        applyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const job = JSON.parse(this.getAttribute('data-job'));
+                localStorage.setItem('selectedJob', JSON.stringify(job)); // Store the job details
+                window.location.href = 'jobDetails.html'; // Redirect to job details page
+            });
+        });
     }
 
     // Logout functionality

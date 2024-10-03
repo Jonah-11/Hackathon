@@ -63,7 +63,7 @@ async function loginUser(event) {
     }
 
     try {
-        const response = await fetch('https://hackathon-production-c8fa.up.railway.app/login', {
+        const response = await fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -132,7 +132,6 @@ async function submitJobForm(event) {
     }
 }
 
-
 // ------------------------ Fetch and Display Jobs ------------------------
 async function fetchJobs() {
     try {
@@ -173,7 +172,6 @@ async function fetchJobs() {
         alert(`Failed to load job listings: ${error.message}`);
     }
 }
-
 
 // ------------------------ Event Listeners ------------------------
 document.addEventListener('DOMContentLoaded', () => {

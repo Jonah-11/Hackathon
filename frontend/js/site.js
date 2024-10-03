@@ -1,5 +1,5 @@
 // Constants for API URLs
-const API_BASE_URL = 'http://localhost:3000'; // Update with your backend URL if different
+const API_BASE_URL = 'hackathon-production-c8fa.up.railway.app'; // Update with your backend URL if different
 
 // Function to register a new user
 async function registerUser() {

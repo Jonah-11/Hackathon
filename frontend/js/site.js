@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Post a job form handler
     async function postJob(event) {
         event.preventDefault();
 
@@ -9,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const companyName = document.getElementById('companyName').value;
         const location = document.getElementById('location').value;
         const jobDescription = document.getElementById('description').value;
+        const contactEmail = document.getElementById('contactEmail').value;
+        const contactPhone = document.getElementById('contactPhone').value;
         const token = localStorage.getItem('token');
 
         try {
@@ -23,6 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     company_name: companyName,
                     location: location,
                     job_description: jobDescription,
+                    contact_email: contactEmail,
+                    contact_phone: contactPhone,
                 }),
             });
 
@@ -30,10 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 alert(data.message);
-                document.getElementById('jobTitle').value = '';
-                document.getElementById('companyName').value = '';
-                document.getElementById('location').value = '';
-                document.getElementById('description').value = '';
+                document.getElementById('jobForm').reset(); // Reset the form
             } else {
                 alert(data.error || 'Failed to create job listing.');
             }
@@ -135,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // Clear existing job list before appending new entries
             jobList.innerHTML = '';
 
-            // Loop through and display each job
             jobs.forEach(job => {
                 const jobElement = document.createElement('div');
                 jobElement.className = 'job-listing';
@@ -144,9 +143,21 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p><strong>Company:</strong> ${job.company_name}</p>
                     <p><strong>Location:</strong> ${job.location}</p>
                     <p><strong>Description:</strong> ${job.job_description}</p>
+                    <button class="apply-btn" data-email="${job.contact_email}" data-phone="${job.contact_phone}">Apply</button>
                 `;
                 jobList.appendChild(jobElement);
             });
+
+            // Add event listener for Apply buttons
+            const applyButtons = document.querySelectorAll('.apply-btn');
+            applyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const email = this.getAttribute('data-email');
+                    const phone = this.getAttribute('data-phone');
+                    alert(`Contact Email: ${email}\nContact Phone: ${phone}`);
+                });
+            });
+
         } catch (error) {
             console.error('Error fetching job listings:', error);
             alert('An error occurred while fetching job listings.');

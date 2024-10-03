@@ -68,7 +68,7 @@ async function loginUser(event) {
         const data = await response.json();
         alert('Logged in successfully');
         localStorage.setItem('token', data.token);
-        window.location.href = 'dashboard.html'; // Redirect after successful login
+        window.location.href = 'status.html'; // Redirect after successful login
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to log in. Please check your credentials.');

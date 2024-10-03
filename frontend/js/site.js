@@ -112,10 +112,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Fetch job listings
+    // Fetch job listings automatically when the page loads
     async function fetchJobListings() {
-        const jobListContainer = document.getElementById('jobListContainer');
-        if (!jobListContainer) return;
+        const jobList = document.getElementById('jobList'); // Correct ID reference for job list
 
         try {
             const response = await fetch('https://hackathon-production-c8fa.up.railway.app/jobListings', {
@@ -128,8 +127,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const jobs = await response.json();
 
             // Clear existing job list before appending new entries
-            jobListContainer.innerHTML = '';
+            jobList.innerHTML = '';
 
+            // Loop through and display each job
             jobs.forEach(job => {
                 const jobElement = document.createElement('div');
                 jobElement.className = 'job-listing';
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p><strong>Location:</strong> ${job.location}</p>
                     <p><strong>Description:</strong> ${job.job_description}</p>
                 `;
-                jobListContainer.appendChild(jobElement);
+                jobList.appendChild(jobElement);
             });
         } catch (error) {
             console.error('Error fetching job listings:', error);
@@ -175,6 +175,6 @@ document.addEventListener('DOMContentLoaded', function () {
         logoutButton.addEventListener('click', logoutUser);
     }
 
-    // Fetch job listings on page load
+    // Automatically fetch job listings on page load
     fetchJobListings();
 });

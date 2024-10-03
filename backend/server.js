@@ -113,7 +113,7 @@ app.post('/jobListings', async (req, res) => {
     }
 
     try {
-        const query = 'INSERT INTO job_listings (job_title, company_name, job_description, location, created_at) VALUES (?, ?, ?, ?, NOW())';
+        const query = 'INSERT INTO job_listings (job_title, company_name, job_description, location) VALUES (?, ?, ?, ?)';
         const connection = await dbPool.getConnection();
         await connection.execute(query, [job_title, company_name, job_description, location]);
         connection.release();
@@ -128,7 +128,7 @@ app.post('/jobListings', async (req, res) => {
 // ------------------------ Fetch Job Listings ------------------------
 app.get('/jobListings', async (req, res) => {
     try {
-        const query = 'SELECT * FROM job_listings ORDER BY created_at DESC';
+        const query = 'SELECT * FROM job_listings'; // Removed ORDER BY created_at
         const connection = await dbPool.getConnection();
         const [rows] = await connection.execute(query);
         connection.release();
@@ -144,7 +144,7 @@ app.get('/jobListings', async (req, res) => {
 app.get('/jobListings/search', async (req, res) => {
     try {
         const { query } = req.query; // Retrieve the search query from the request
-        let sqlQuery = 'SELECT * FROM job_listings WHERE job_title LIKE ? OR company_name LIKE ? ORDER BY created_at DESC';
+        let sqlQuery = 'SELECT * FROM job_listings WHERE job_title LIKE ? OR company_name LIKE ?'; // Removed ORDER BY created_at
         const connection = await dbPool.getConnection();
         const [rows] = await connection.execute(sqlQuery, [`%${query}%`, `%${query}%`]);
         connection.release();
@@ -155,7 +155,6 @@ app.get('/jobListings/search', async (req, res) => {
         res.status(500).json({ error: "Failed to fetch search results." });
     }
 });
-
 
 // Start the server
 app.listen(PORT, () => {

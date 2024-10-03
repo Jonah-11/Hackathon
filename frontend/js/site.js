@@ -33,16 +33,6 @@ async function registerUser(event) {
 }
 
 // ------------------------ User Login ------------------------
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('login-form');
-
-    if (loginForm) {
-        loginForm.addEventListener('submit', loginUser);
-    } else {
-        console.error('Login form not found in the DOM.');
-    }
-});
-
 async function loginUser(event) {
     event.preventDefault();
 
@@ -175,29 +165,38 @@ async function fetchJobs() {
 
 // ------------------------ Event Listeners ------------------------
 document.addEventListener('DOMContentLoaded', () => {
-    // Add event listeners for form submissions
-    const registerForm = document.getElementById('register-form');
-    const loginForm = document.getElementById('login-form');
-    const entrepreneurForm = document.getElementById('jobForm');
+    console.log("DOM fully loaded and parsed");
 
+    // Check for the registration form
+    const registerForm = document.getElementById('register-form');
     if (registerForm) {
         registerForm.addEventListener('submit', registerUser);
+        console.log("Register form found and event listener added.");
     } else {
-        console.error("Register form not found in the DOM.");
+        console.warn("Register form not found in the DOM.");
     }
 
+    // Check for the login form
+    const loginForm = document.getElementById('login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', loginUser);
+        console.log("Login form found and event listener added.");
     } else {
-        console.error("Login form not found in the DOM.");
+        console.warn("Login form not found in the DOM.");
     }
 
+    // Check for the job form
+    const entrepreneurForm = document.getElementById('jobForm');
     if (entrepreneurForm) {
         entrepreneurForm.addEventListener('submit', submitJobForm);
+        console.log("Job form found and event listener added.");
     } else {
-        console.error("Job form not found in the DOM.");
+        console.warn("Job form not found in the DOM.");
     }
 
-    // Fetch jobs when the page loads
-    fetchJobs();
+    // Fetch jobs when the entrepreneur page loads
+    const jobListContainer = document.getElementById('jobListContainer');
+    if (jobListContainer) {
+        fetchJobs();
+    }
 });

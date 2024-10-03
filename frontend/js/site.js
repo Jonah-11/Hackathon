@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Add search button event listener
-    const searchButton = document.getElementById('searchButton');
+    const searchButton = document.getElementById('searchJobsBtn');
     if (searchButton) {
         searchButton.addEventListener('click', searchJobs);
         console.log("Search button found and event listener added.");

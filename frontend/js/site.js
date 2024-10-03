@@ -22,7 +22,6 @@ async function registerUser() {
         if (response.ok) {
             alert(data.message);
             // Redirect or clear form after successful registration
-            // window.location.href = '/login.html'; // Example redirect
         } else {
             alert(data.message);
         }
@@ -51,8 +50,6 @@ async function loginUser() {
         if (response.ok) {
             alert(data.message);
             localStorage.setItem('token', data.token); // Store the token for future requests
-            // Redirect to dashboard or another page
-            // window.location.href = '/dashboard.html'; // Example redirect
         } else {
             alert(data.message);
         }
@@ -84,7 +81,11 @@ async function postJob() {
 
         if (response.ok) {
             alert(data.message);
-            // Clear form fields or redirect
+            // Clear form fields
+            document.getElementById('job_title').value = '';
+            document.getElementById('company_name').value = '';
+            document.getElementById('location').value = '';
+            document.getElementById('job_description').value = '';
         } else {
             alert(data.error || 'Failed to create job listing.');
         }
@@ -94,14 +95,27 @@ async function postJob() {
     }
 }
 
-// Function to fetch job listings (optional)
+// Function to fetch job listings
 async function fetchJobListings() {
     try {
         const response = await fetch(`${API_BASE_URL}/jobListings`);
         const listings = await response.json();
 
         if (response.ok) {
-            console.log(listings); // Process and display job listings as needed
+            const jobListContainer = document.getElementById('jobListContainer');
+            jobListContainer.innerHTML = ''; // Clear previous listings
+
+            listings.forEach(job => {
+                const jobElement = document.createElement('div');
+                jobElement.classList.add('job');
+                jobElement.innerHTML = `
+                    <h3>${job.job_title}</h3>
+                    <p><strong>Company:</strong> ${job.company_name}</p>
+                    <p><strong>Location:</strong> ${job.location}</p>
+                    <p><strong>Description:</strong> ${job.job_description}</p>
+                `;
+                jobListContainer.appendChild(jobElement);
+            });
         } else {
             alert('Failed to fetch job listings.');
         }
@@ -111,8 +125,11 @@ async function fetchJobListings() {
     }
 }
 
-// Example event listeners (assuming you have buttons with these IDs)
+// Event listeners for buttons
 document.getElementById('registerBtn').addEventListener('click', registerUser);
 document.getElementById('loginBtn').addEventListener('click', loginUser);
-document.getElementById('postJobBtn').addEventListener('click', postJob);
+document.getElementById('jobForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent default form submission
+    await postJob(); // Call the postJob function
+});
 document.getElementById('fetchJobsBtn').addEventListener('click', fetchJobListings);

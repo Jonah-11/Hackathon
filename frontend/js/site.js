@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (entrepreneurForm) {
-        entrepreneurForm.addEventListener('submit', submitJobForm);
+        entrepreneurForm.addEventListener('submit', entrepreneurForm);
     } else {
         console.error("Job form not found in the DOM.");
     }

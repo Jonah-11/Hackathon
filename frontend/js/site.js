@@ -112,9 +112,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Fetch job listings automatically when the page loads
+    // Fetch job listings
     async function fetchJobListings() {
-        const jobList = document.getElementById('jobList'); // Correct ID reference for job list
+        const jobList = document.getElementById('jobList');
+
+        // Ensure jobList exists
+        if (!jobList) {
+            console.warn('Job list container not found. Skipping fetchJobListings.');
+            return; // Stop the function if the container is missing
+        }
 
         try {
             const response = await fetch('https://hackathon-production-c8fa.up.railway.app/jobListings', {
@@ -175,6 +181,8 @@ document.addEventListener('DOMContentLoaded', function () {
         logoutButton.addEventListener('click', logoutUser);
     }
 
-    // Automatically fetch job listings on page load
-    fetchJobListings();
+    // Fetch job listings on page load, but only if on the jobseeker page
+    if (document.getElementById('jobList')) {
+        fetchJobListings();
+    }
 });

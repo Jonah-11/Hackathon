@@ -140,6 +140,23 @@ app.get('/jobListings', async (req, res) => {
     }
 });
 
+// GET /jobListings/search - Fetch job listings based on search criteria
+app.get('/jobListings/search', async (req, res) => {
+    try {
+        const { query } = req.query; // Retrieve the search query from the request
+        let sqlQuery = 'SELECT * FROM job_listings WHERE job_title LIKE ? OR company_name LIKE ? ORDER BY created_at DESC';
+        const connection = await dbPool.getConnection();
+        const [rows] = await connection.execute(sqlQuery, [`%${query}%`, `%${query}%`]);
+        connection.release();
+
+        res.status(200).json(rows);
+    } catch (error) {
+        console.error('Error fetching search results:', error);
+        res.status(500).json({ error: "Failed to fetch search results." });
+    }
+});
+
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);

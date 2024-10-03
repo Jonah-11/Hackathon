@@ -138,7 +138,7 @@ async function fetchJobs() {
         }
 
         const jobListings = await response.json();
-        const jobListContainer = document.getElementById('jobListContainer');
+        const jobListContainer = document.getElementById('jobList');
         jobListContainer.innerHTML = ''; // Clear previous jobs
 
         if (jobListings.length === 0) {
@@ -160,47 +160,6 @@ async function fetchJobs() {
     } catch (error) {
         console.error('Error:', error);
         alert(`Failed to load job listings: ${error.message}`);
-    }
-}
-
-// ------------------------ Search Jobs ------------------------
-async function searchJobs() {
-    try {
-        // Assume you have an endpoint that accepts a GET request for search
-        const response = await fetch(`${API_URL}/jobListings/search`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch search results.');
-        }
-
-        const jobListings = await response.json();
-        const jobListContainer = document.getElementById('jobListContainer');
-        jobListContainer.innerHTML = ''; // Clear previous jobs
-
-        if (jobListings.length === 0) {
-            jobListContainer.innerHTML = '<p>No jobs available.</p>';
-        } else {
-            jobListings.forEach(job => {
-                const jobElement = `
-                    <div class="job-item">
-                        <h3>${job.job_title}</h3>
-                        <p><strong>Company:</strong> ${job.company_name}</p>
-                        <p><strong>Location:</strong> ${job.location}</p>
-                        <p><strong>Description:</strong> ${job.job_description || 'No description available.'}</p>
-                        <button onclick="viewJobDetails('${job.id}')">View Details</button>
-                    </div>
-                `;
-                jobListContainer.innerHTML += jobElement;
-            });
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert(`Failed to load search results: ${error.message}`);
     }
 }
 
@@ -235,18 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn("Job form not found in the DOM.");
     }
 
-    // Fetch jobs when the entrepreneur page loads
-    const jobListContainer = document.getElementById('jobListContainer');
-    if (jobListContainer) {
-        fetchJobs();
-    }
-
-    // Add search button event listener
-    const searchButton = document.getElementById('searchJobsBtn');
-    if (searchButton) {
-        searchButton.addEventListener('click', searchJobs);
-        console.log("Search button found and event listener added.");
-    } else {
-        console.warn("Search button not found in the DOM.");
-    }
+    // Fetch jobs when the job seeker page loads
+    fetchJobs(); // Call fetchJobs directly since the search functionality is removed
 });

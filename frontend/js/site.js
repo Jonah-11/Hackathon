@@ -1,113 +1,138 @@
-// Constants for API URLs
-const API_BASE_URL = 'hackathon-production-c8fa.up.railway.app'; // Update with your backend URL if different
+document.addEventListener('DOMContentLoaded', function () {
 
-// Function to register a new user
-async function registerUser() {
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const user_type = document.getElementById('user_type').value;
+    // Post a job form handler
+    async function postJob(event) {
+        event.preventDefault();
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, email, password, user_type }),
-        });
+        // Get values from the job form
+        const jobTitle = document.getElementById('jobTitle').value;
+        const companyName = document.getElementById('companyName').value;
+        const location = document.getElementById('location').value;
+        const jobDescription = document.getElementById('description').value;
+        const token = localStorage.getItem('token');
 
-        const data = await response.json();
+        try {
+            const response = await fetch('https://hackathon-production-c8fa.up.railway.app/jobListings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    job_title: jobTitle,
+                    company_name: companyName,
+                    location: location,
+                    job_description: jobDescription,
+                }),
+            });
 
-        if (response.ok) {
-            alert(data.message);
-            // Redirect or clear form after successful registration
-        } else {
-            alert(data.message);
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.message);
+                document.getElementById('jobTitle').value = '';
+                document.getElementById('companyName').value = '';
+                document.getElementById('location').value = '';
+                document.getElementById('description').value = '';
+            } else {
+                alert(data.error || 'Failed to create job listing.');
+            }
+        } catch (error) {
+            console.error('Error posting job:', error);
+            alert('An error occurred while posting the job.');
         }
-    } catch (error) {
-        console.error('Error during registration:', error);
-        alert('An error occurred during registration.');
     }
-}
 
-// Function to log in a user
-async function loginUser() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    // Register form handler
+    async function registerUser(event) {
+        event.preventDefault();
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
-        const data = await response.json();
+        try {
+            const response = await fetch('https://hackathon-production-c8fa.up.railway.app/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password,
+                }),
+            });
 
-        if (response.ok) {
-            alert(data.message);
-            localStorage.setItem('token', data.token); // Store the token for future requests
-        } else {
-            alert(data.message);
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.message);
+                window.location.href = 'login.html'; // Redirect to login page on success
+            } else {
+                alert(data.error || 'Registration failed.');
+            }
+        } catch (error) {
+            console.error('Error during registration:', error);
+            alert('An error occurred while registering.');
         }
-    } catch (error) {
-        console.error('Error during login:', error);
-        alert('An error occurred during login.');
     }
-}
 
-// Function to post a new job listing
-async function postJob() {
-    const job_title = document.getElementById('job_title').value;
-    const company_name = document.getElementById('company_name').value;
-    const location = document.getElementById('location').value;
-    const job_description = document.getElementById('job_description').value;
-    const token = localStorage.getItem('token'); // Retrieve the JWT token
+    // Login form handler
+    async function loginUser(event) {
+        event.preventDefault();
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/jobListings`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Attach token for authentication
-            },
-            body: JSON.stringify({ job_title, company_name, location, job_description }),
-        });
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
-        const data = await response.json();
+        try {
+            const response = await fetch('https://hackathon-production-c8fa.up.railway.app/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                }),
+            });
 
-        if (response.ok) {
-            alert(data.message);
-            // Clear form fields
-            document.getElementById('job_title').value = '';
-            document.getElementById('company_name').value = '';
-            document.getElementById('location').value = '';
-            document.getElementById('job_description').value = '';
-        } else {
-            alert(data.error || 'Failed to create job listing.');
+            const data = await response.json();
+
+            if (response.ok) {
+                localStorage.setItem('token', data.token);
+                alert('Login successful!');
+                window.location.href = 'entrepreneur.html'; // Redirect to entrepreneur page
+            } else {
+                alert(data.error || 'Login failed.');
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
+            alert('An error occurred while logging in.');
         }
-    } catch (error) {
-        console.error('Error during job posting:', error);
-        alert('An error occurred while posting the job.');
     }
-}
 
-// Function to fetch job listings
-async function fetchJobListings() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/jobListings`);
-        const listings = await response.json();
+    // Fetch job listings
+    async function fetchJobListings() {
+        const jobListContainer = document.getElementById('jobListContainer');
+        if (!jobListContainer) return;
 
-        if (response.ok) {
-            const jobListContainer = document.getElementById('jobListContainer');
-            jobListContainer.innerHTML = ''; // Clear previous listings
+        try {
+            const response = await fetch('https://hackathon-production-c8fa.up.railway.app/jobListings', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
 
-            listings.forEach(job => {
+            const jobs = await response.json();
+
+            // Clear existing job list before appending new entries
+            jobListContainer.innerHTML = '';
+
+            jobs.forEach(job => {
                 const jobElement = document.createElement('div');
-                jobElement.classList.add('job');
+                jobElement.className = 'job-listing';
                 jobElement.innerHTML = `
                     <h3>${job.job_title}</h3>
                     <p><strong>Company:</strong> ${job.company_name}</p>
@@ -116,70 +141,40 @@ async function fetchJobListings() {
                 `;
                 jobListContainer.appendChild(jobElement);
             });
-        } else {
-            alert('Failed to fetch job listings.');
-        }
-    } catch (error) {
-        console.error('Error fetching job listings:', error);
-        alert('An error occurred while fetching job listings.');
-    }
-}
-
-// Ensure the DOM is fully loaded before executing the script
-document.addEventListener('DOMContentLoaded', function () {
-    const API_BASE_URL = 'http://localhost:3000'; // Update with your backend URL if different
-
-    // Function to register a new user
-    async function registerUser(event) {
-        event.preventDefault(); // Prevent the default form submission behavior
-
-        // Retrieve form data
-        const userType = document.getElementById('user_type').value;
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        // Prepare data for submission
-        const data = {
-            user_type: userType,
-            name: name,
-            email: email,
-            password: password
-        };
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                alert(`Registration successful! Welcome, ${result.name}`);
-                // Optionally redirect or clear the form
-                document.getElementById('register-form').reset();
-            } else {
-                const error = await response.json();
-                alert(`Registration failed: ${error.message}`);
-            }
         } catch (error) {
-            alert('Error during registration: ' + error.message);
+            console.error('Error fetching job listings:', error);
+            alert('An error occurred while fetching job listings.');
         }
     }
 
-    // Event listener for form submission
-    document.getElementById('register-form').addEventListener('submit', registerUser);
-});
+    // Logout functionality
+    function logoutUser() {
+        localStorage.removeItem('token');
+        alert('You have been logged out.');
+        window.location.href = 'login.html'; // Redirect to login page
+    }
 
+    // Attach event listeners for forms and logout button
+    const jobForm = document.getElementById('jobForm');
+    if (jobForm) {
+        jobForm.addEventListener('submit', postJob);
+    }
 
-// Event listeners for buttons
-document.getElementById('registerBtn').addEventListener('click', registerUser);
-document.getElementById('loginBtn').addEventListener('click', loginUser);
-document.getElementById('jobForm').addEventListener('submit', async function(event) {
-    event.preventDefault(); // Prevent default form submission
-    await postJob(); // Call the postJob function
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', registerUser);
+    }
+
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', loginUser);
+    }
+
+    const logoutButton = document.getElementById('logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', logoutUser);
+    }
+
+    // Fetch job listings on page load
+    fetchJobListings();
 });
-document.getElementById('fetchJobsBtn').addEventListener('click', fetchJobListings);

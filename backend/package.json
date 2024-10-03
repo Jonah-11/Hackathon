@@ -2,7 +2,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.0",
-    "express-rate-limit": "^7.4.0"
+    "express-rate-limit": "^7.4.0",
+    "mysql2": "^3.11.3"
   },
   "name": "backend",
   "version": "1.0.0",

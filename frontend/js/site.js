@@ -89,6 +89,7 @@ async function loginUser(event) {
 async function submitJobForm(event) {
     event.preventDefault();
 
+    document.querySelector('.loader').style.display = 'block'; // Show loader
     const jobTitle = document.getElementById('jobTitle').value;
     const location = document.getElementById('location').value;
     const companyName = document.getElementById('companyName').value;
@@ -96,6 +97,7 @@ async function submitJobForm(event) {
 
     if (!jobTitle || !location || !companyName || !description) {
         alert("Please fill in all fields.");
+        document.querySelector('.loader').style.display = 'none'; // Hide loader
         return;
     }
 
@@ -125,8 +127,11 @@ async function submitJobForm(event) {
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to post the job. Please try again.');
+    } finally {
+        document.querySelector('.loader').style.display = 'none'; // Hide loader after submission
     }
 }
+
 
 // ------------------------ Fetch and Display Jobs ------------------------
 async function fetchJobs() {
@@ -139,15 +144,13 @@ async function fetchJobs() {
         });
 
         if (!response.ok) {
-            const errorText = await response.text(); // Read the response text for more details
+            const errorText = await response.text(); // Get more details on the error
             throw new Error(`Failed to fetch job listings: ${response.status} ${response.statusText} - ${errorText}`);
         }
 
         const jobListings = await response.json();
         const jobListContainer = document.getElementById('jobListContainer');
-
-        // Clear existing jobs
-        jobListContainer.innerHTML = '';
+        jobListContainer.innerHTML = ''; // Clear previous jobs
 
         if (jobListings.length === 0) {
             jobListContainer.innerHTML = '<p>No jobs available.</p>';
@@ -165,12 +168,12 @@ async function fetchJobs() {
                 jobListContainer.innerHTML += jobElement;
             });
         }
-
     } catch (error) {
         console.error('Error:', error);
-        alert('Failed to load job listings: ' + error.message);
+        alert(`Failed to load job listings: ${error.message}`);
     }
 }
+
 
 // ------------------------ Event Listeners ------------------------
 document.addEventListener('DOMContentLoaded', () => {
@@ -192,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (entrepreneurForm) {
-        entrepreneurForm.addEventListener('submit', submitjobForm);
+        entrepreneurForm.addEventListener('submit', submitJobForm);
     } else {
         console.error("Job form not found in the DOM.");
     }

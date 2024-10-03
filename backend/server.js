@@ -31,10 +31,10 @@ const dbConfig = {
 // Initialize database connection pool
 const dbPool = mysql.createPool(dbConfig);
 
-// Registration handler function
+// ------------------------ User Registration ------------------------
 app.post('/register', async (req, res) => {
     try {
-        console.log(req.body); // Debugging: Log the incoming request body
+        console.log('Register request body:', req.body); // Debugging: Log the incoming request body
 
         const { name, email, password, user_type } = req.body;
 
@@ -53,7 +53,7 @@ app.post('/register', async (req, res) => {
         connection.release(); // Release the connection back to the pool
 
         console.log('New user created:', { user_type, name, email });
-        
+
         // Return success response to the frontend
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
@@ -62,10 +62,10 @@ app.post('/register', async (req, res) => {
     }
 });
 
-// Login handler function
+// ------------------------ User Login ------------------------
 app.post('/login', async (req, res) => {
     try {
-        console.log(req.body); // Debugging: Log the incoming request body
+        console.log('Login request body:', req.body); // Debugging: Log the incoming request body
 
         const { email, password } = req.body;
 
@@ -103,8 +103,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
-
-// POST /jobListings - Create a job listing
+// ------------------------ Job Posting ------------------------
 app.post('/jobListings', async (req, res) => {
     const { job_title, company_name, location, job_description } = req.body;
 
@@ -126,7 +125,7 @@ app.post('/jobListings', async (req, res) => {
     }
 });
 
-// GET /jobListings - Fetch job listings
+// ------------------------ Fetch Job Listings ------------------------
 app.get('/jobListings', async (req, res) => {
     try {
         const query = 'SELECT * FROM job_listings ORDER BY created_at DESC';

@@ -163,6 +163,47 @@ async function fetchJobs() {
     }
 }
 
+// ------------------------ Search Jobs ------------------------
+async function searchJobs() {
+    try {
+        // Assume you have an endpoint that accepts a GET request for search
+        const response = await fetch(`${API_URL}/jobListings/search`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch search results.');
+        }
+
+        const jobListings = await response.json();
+        const jobListContainer = document.getElementById('jobListContainer');
+        jobListContainer.innerHTML = ''; // Clear previous jobs
+
+        if (jobListings.length === 0) {
+            jobListContainer.innerHTML = '<p>No jobs available.</p>';
+        } else {
+            jobListings.forEach(job => {
+                const jobElement = `
+                    <div class="job-item">
+                        <h3>${job.job_title}</h3>
+                        <p><strong>Company:</strong> ${job.company_name}</p>
+                        <p><strong>Location:</strong> ${job.location}</p>
+                        <p><strong>Description:</strong> ${job.job_description || 'No description available.'}</p>
+                        <button onclick="viewJobDetails('${job.id}')">View Details</button>
+                    </div>
+                `;
+                jobListContainer.innerHTML += jobElement;
+            });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert(`Failed to load search results: ${error.message}`);
+    }
+}
+
 // ------------------------ Event Listeners ------------------------
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded and parsed");
@@ -198,5 +239,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const jobListContainer = document.getElementById('jobListContainer');
     if (jobListContainer) {
         fetchJobs();
+    }
+
+    // Add search button event listener
+    const searchButton = document.getElementById('searchButton');
+    if (searchButton) {
+        searchButton.addEventListener('click', searchJobs);
+        console.log("Search button found and event listener added.");
+    } else {
+        console.warn("Search button not found in the DOM.");
     }
 });

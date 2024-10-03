@@ -125,6 +125,56 @@ async function fetchJobListings() {
     }
 }
 
+// Ensure the DOM is fully loaded before executing the script
+document.addEventListener('DOMContentLoaded', function () {
+    const API_BASE_URL = 'http://localhost:3000'; // Update with your backend URL if different
+
+    // Function to register a new user
+    async function registerUser(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        // Retrieve form data
+        const userType = document.getElementById('user_type').value;
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Prepare data for submission
+        const data = {
+            user_type: userType,
+            name: name,
+            email: email,
+            password: password
+        };
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert(`Registration successful! Welcome, ${result.name}`);
+                // Optionally redirect or clear the form
+                document.getElementById('register-form').reset();
+            } else {
+                const error = await response.json();
+                alert(`Registration failed: ${error.message}`);
+            }
+        } catch (error) {
+            alert('Error during registration: ' + error.message);
+        }
+    }
+
+    // Event listener for form submission
+    document.getElementById('register-form').addEventListener('submit', registerUser);
+});
+
+
 // Event listeners for buttons
 document.getElementById('registerBtn').addEventListener('click', registerUser);
 document.getElementById('loginBtn').addEventListener('click', loginUser);

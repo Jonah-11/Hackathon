@@ -1,3 +1,4 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -27,18 +28,6 @@ header {
 .logo {
     display: flex; /* Use flexbox to arrange items in a row */
     align-items: center; /* Vertically center the items */
-}
-
-.logo img {
-    height: 50px; /* Keep the logo height */
-    margin-right: 10px; /* Add space between the logo and text */
-}
-
-.logo p {
-    margin: 0; /* Remove default margin for the paragraph */
-    font-size: 1.5em; /* Adjust font size if needed */
-    color: white; /* Set text color */
-    font-family: 'Dancing Script', cursive; /* Use your desired font */
 }
 
 nav {
@@ -71,52 +60,53 @@ h2 {
     color: #333;
 }
 
-form {
+/* Job Posting Section */
+.job-list {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-label {
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-select {
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
+.job-listing {
+    background-color: #ffffff;
     border: 1px solid #ddd;
-    width: 100%;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 20px;
 }
 
-button {
-    padding: 10px;
+.job-listing h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.job-listing p {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.job-listing .job-details {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.job-listing button {
     background-color: #4CAF50;
     color: white;
     border: none;
+    padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
 }
 
-button:hover {
+.job-listing button:hover {
     background-color: #45a049;
-}
-
-.job-listing {
-    margin-top: 30px;
-}
-
-.job-listing ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.job-listing li {
-    background-color: #f4f4f4;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
 }
 
 /* Footer Styles */
@@ -132,14 +122,12 @@ footer {
     display: flex;
     justify-content: space-around; /* Space between sections evenly */
     padding: 0 10%; /* Padding to create space from edges */
-    
 }
 
 .footer-section {
     flex: 1; /* Allow equal spacing */
     min-width: 200px; /* Minimum width for better layout */
     padding: 10px; /* Padding between footer sections */
-    
     background-color: rgba(44, 62, 80, 0.9); /* Slightly transparent background for visibility */
 }
 

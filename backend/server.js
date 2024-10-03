@@ -115,18 +115,24 @@ app.post('/login', loginLimiter, async (req, res) => {
 
 // ------------------------ Job Posting ------------------------
 app.post('/jobListings', async (req, res) => {
-    const { job_title, company_name, location, job_description } = req.body;
+    const { job_title, company_name, location, job_description, contact_email, contact_phone } = req.body; // Include contact_email and contact_phone
 
     // Validate input
     if (!job_title) return res.status(400).json({ message: "Job title is required." });
     if (!company_name) return res.status(400).json({ message: "Company name is required." });
     if (!location) return res.status(400).json({ message: "Location is required." });
     if (!job_description) return res.status(400).json({ message: "Job description is required." });
+    if (!contact_email) return res.status(400).json({ message: "Contact email is required." }); // Validate contact_email
+    if (!contact_phone) return res.status(400).json({ message: "Contact phone is required." }); // Validate contact_phone
 
     try {
-        const query = 'INSERT INTO job_listings (job_title, company_name, job_description, location) VALUES (?, ?, ?, ?)';
+        // Update the query to include contact_email and contact_phone
+        const query = `
+            INSERT INTO job_listings (job_title, company_name, job_description, location, contact_email, contact_phone) 
+            VALUES (?, ?, ?, ?, ?, ?)
+        `;
         const connection = await dbPool.getConnection();
-        await connection.execute(query, [job_title, company_name, job_description, location]);
+        await connection.execute(query, [job_title, company_name, job_description, location, contact_email, contact_phone]);
         connection.release();
 
         res.status(201).json({ message: "Job listing created successfully." });

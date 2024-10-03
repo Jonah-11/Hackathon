@@ -1,59 +1,44 @@
-const API_URL = 'https://hackathon-production-c8fa.up.railway.app'; // Railway backend URL
+// Constants for API URLs
+const API_BASE_URL = 'http://localhost:3000'; // Update with your backend URL if different
 
-// ------------------------ User Registration ------------------------
-async function registerUser(event) {
-    event.preventDefault();
-
-    const userData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        password: document.getElementById('password').value,
-        user_type: document.getElementById('user_type').value,
-    };
+// Function to register a new user
+async function registerUser() {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const user_type = document.getElementById('user_type').value;
 
     try {
-        const response = await fetch(`${API_URL}/register`, {
+        const response = await fetch(`${API_BASE_URL}/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(userData),
+            body: JSON.stringify({ name, email, password, user_type }),
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to register user.');
-        }
+        const data = await response.json();
 
-        const result = await response.json();
-        alert('Registration successful');
+        if (response.ok) {
+            alert(data.message);
+            // Redirect or clear form after successful registration
+            // window.location.href = '/login.html'; // Example redirect
+        } else {
+            alert(data.message);
+        }
     } catch (error) {
-        console.error('Error:', error.message);
-        alert('Registration failed: ' + error.message);
+        console.error('Error during registration:', error);
+        alert('An error occurred during registration.');
     }
 }
 
-// ------------------------ User Login ------------------------
-async function loginUser(event) {
-    event.preventDefault();
-
-    const emailInput = document.getElementById('loginEmail');
-    const passwordInput = document.getElementById('loginPassword');
-
-    if (!emailInput || !passwordInput) {
-        alert('Login form elements are not available.');
-        return;
-    }
-
-    const email = emailInput.value;
-    const password = passwordInput.value;
-
-    if (email === '' || password === '') {
-        alert("Please enter both email and password.");
-        return;
-    }
+// Function to log in a user
+async function loginUser() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch(`${API_URL}/login`, {
+        const response = await fetch(`${API_BASE_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,139 +46,73 @@ async function loginUser(event) {
             body: JSON.stringify({ email, password }),
         });
 
-        if (!response.ok) {
-            throw new Error('Invalid credentials.');
-        }
-
         const data = await response.json();
-        alert('Logged in successfully');
-        localStorage.setItem('token', data.token);
-        window.location.href = 'status.html'; // Redirect after successful login
+
+        if (response.ok) {
+            alert(data.message);
+            localStorage.setItem('token', data.token); // Store the token for future requests
+            // Redirect to dashboard or another page
+            // window.location.href = '/dashboard.html'; // Example redirect
+        } else {
+            alert(data.message);
+        }
     } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to log in. Please check your credentials.');
+        console.error('Error during login:', error);
+        alert('An error occurred during login.');
     }
 }
 
-// ------------------------ Job Posting ------------------------
-async function submitJobForm(event) {
-    event.preventDefault();
-
-    document.querySelector('.loader').style.display = 'block'; // Show loader
-    const jobTitle = document.getElementById('jobTitle').value;
+// Function to post a new job listing
+async function postJob() {
+    const job_title = document.getElementById('job_title').value;
+    const company_name = document.getElementById('company_name').value;
     const location = document.getElementById('location').value;
-    const companyName = document.getElementById('companyName').value;
-    const description = document.getElementById('description').value;
-
-    if (!jobTitle || !location || !companyName || !description) {
-        alert("Please fill in all fields.");
-        document.querySelector('.loader').style.display = 'none'; // Hide loader
-        return;
-    }
-
-    const jobListing = {
-        job_title: jobTitle,
-        company_name: companyName,
-        location,
-        job_description: description,
-    };
+    const job_description = document.getElementById('job_description').value;
+    const token = localStorage.getItem('token'); // Retrieve the JWT token
 
     try {
-        const response = await fetch(`${API_URL}/jobListings`, {
+        const response = await fetch(`${API_BASE_URL}/jobListings`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Attach token for authentication
             },
-            body: JSON.stringify(jobListing),
+            body: JSON.stringify({ job_title, company_name, location, job_description }),
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to post the job.');
-        }
+        const data = await response.json();
 
-        alert('Job listing submitted successfully.');
-        document.getElementById('jobForm').reset(); // Reset form after submission
-        fetchJobs(); // Refresh job listings
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to post the job. Please try again.');
-    } finally {
-        document.querySelector('.loader').style.display = 'none'; // Hide loader after submission
-    }
-}
-
-// ------------------------ Fetch and Display Jobs ------------------------
-async function fetchJobs() {
-    try {
-        const response = await fetch(`${API_URL}/jobListings`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text(); // Get more details on the error
-            throw new Error(`Failed to fetch job listings: ${response.status} ${response.statusText} - ${errorText}`);
-        }
-
-        const jobListings = await response.json();
-        const jobListContainer = document.getElementById('jobList');
-        jobListContainer.innerHTML = ''; // Clear previous jobs
-
-        if (jobListings.length === 0) {
-            jobListContainer.innerHTML = '<p>No jobs available.</p>';
+        if (response.ok) {
+            alert(data.message);
+            // Clear form fields or redirect
         } else {
-            jobListings.forEach(job => {
-                const jobElement = `
-                    <div class="job-item">
-                        <h3>${job.job_title}</h3>
-                        <p><strong>Company:</strong> ${job.company_name}</p>
-                        <p><strong>Location:</strong> ${job.location}</p>
-                        <p><strong>Description:</strong> ${job.job_description || 'No description available.'}</p>
-                        <button onclick="viewJobDetails('${job.id}')">View Details</button>
-                    </div>
-                `;
-                jobListContainer.innerHTML += jobElement;
-            });
+            alert(data.error || 'Failed to create job listing.');
         }
     } catch (error) {
-        console.error('Error:', error);
-        alert(`Failed to load job listings: ${error.message}`);
+        console.error('Error during job posting:', error);
+        alert('An error occurred while posting the job.');
     }
 }
 
-// ------------------------ Event Listeners ------------------------
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM fully loaded and parsed");
+// Function to fetch job listings (optional)
+async function fetchJobListings() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/jobListings`);
+        const listings = await response.json();
 
-    // Check for the registration form
-    const registerForm = document.getElementById('register-form');
-    if (registerForm) {
-        registerForm.addEventListener('submit', registerUser);
-        console.log("Register form found and event listener added.");
-    } else {
-        console.warn("Register form not found in the DOM.");
+        if (response.ok) {
+            console.log(listings); // Process and display job listings as needed
+        } else {
+            alert('Failed to fetch job listings.');
+        }
+    } catch (error) {
+        console.error('Error fetching job listings:', error);
+        alert('An error occurred while fetching job listings.');
     }
+}
 
-    // Check for the login form
-    const loginForm = document.getElementById('login-form');
-    if (loginForm) {
-        loginForm.addEventListener('submit', loginUser);
-        console.log("Login form found and event listener added.");
-    } else {
-        console.warn("Login form not found in the DOM.");
-    }
-
-    // Check for the job form
-    const entrepreneurForm = document.getElementById('jobForm');
-    if (entrepreneurForm) {
-        entrepreneurForm.addEventListener('submit', submitJobForm);
-        console.log("Job form found and event listener added.");
-    } else {
-        console.warn("Job form not found in the DOM.");
-    }
-
-    // Fetch jobs when the job seeker page loads
-    fetchJobs(); // Call fetchJobs directly since the search functionality is removed
-});
+// Example event listeners (assuming you have buttons with these IDs)
+document.getElementById('registerBtn').addEventListener('click', registerUser);
+document.getElementById('loginBtn').addEventListener('click', loginUser);
+document.getElementById('postJobBtn').addEventListener('click', postJob);
+document.getElementById('fetchJobsBtn').addEventListener('click', fetchJobListings);

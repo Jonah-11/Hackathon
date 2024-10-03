@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,14 +12,21 @@ const PORT = process.env.PORT || 3000;
 // CORS Middleware
 const corsOptions = {
     origin: 'https://workfinder.netlify.app', // Replace with your frontend URL
-    methods: ['GET', 'POST', 'OPTIONS'], // Allow necessary HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Allow necessary headers
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 };
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Allow preflight requests
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.static('public')); // Serve static files from the public directory
+
+// Rate Limiting Middleware
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // Limit each IP to 5 login requests per windowMs
+    message: 'Too many login attempts, please try again later.',
+});
 
 // Database connection configuration
 const dbConfig = {
@@ -39,9 +48,10 @@ app.post('/register', async (req, res) => {
         const { name, email, password, user_type } = req.body;
 
         // Check if all required fields are present
-        if (!name || !email || !password || !user_type) {
-            return res.status(400).json({ message: 'All fields are required' });
-        }
+        if (!name) return res.status(400).json({ message: 'Name is required' });
+        if (!email) return res.status(400).json({ message: 'Email is required' });
+        if (!password) return res.status(400).json({ message: 'Password is required' });
+        if (!user_type) return res.status(400).json({ message: 'User type is required' });
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -63,16 +73,15 @@ app.post('/register', async (req, res) => {
 });
 
 // ------------------------ User Login ------------------------
-app.post('/login', async (req, res) => {
+app.post('/login', loginLimiter, async (req, res) => {
     try {
         console.log('Login request body:', req.body); // Debugging: Log the incoming request body
 
         const { email, password } = req.body;
 
         // Check if all required fields are present
-        if (!email || !password) {
-            return res.status(400).json({ message: 'Email and password are required' });
-        }
+        if (!email) return res.status(400).json({ message: 'Email is required' });
+        if (!password) return res.status(400).json({ message: 'Password is required' });
 
         // Query the database to find the user by email
         const query = 'SELECT * FROM users WHERE email = ?';
@@ -94,8 +103,9 @@ app.post('/login', async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
-        // If login is successful, you can generate a token or session here (optional)
-        res.status(200).json({ message: 'Login successful', user: { id: user.id, name: user.name, email: user.email } });
+        // Generate a token
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.status(200).json({ message: 'Login successful', token, user: { id: user.id, name: user.name, email: user.email } });
 
     } catch (error) {
         console.error('Error during login:', error);
@@ -108,9 +118,10 @@ app.post('/jobListings', async (req, res) => {
     const { job_title, company_name, location, job_description } = req.body;
 
     // Validate input
-    if (!job_title || !company_name || !location || !job_description) {
-        return res.status(400).json({ error: "Please fill in all required fields." });
-    }
+    if (!job_title) return res.status(400).json({ message: "Job title is required." });
+    if (!company_name) return res.status(400).json({ message: "Company name is required." });
+    if (!location) return res.status(400).json({ message: "Location is required." });
+    if (!job_description) return res.status(400).json({ message: "Job description is required." });
 
     try {
         const query = 'INSERT INTO job_listings (job_title, company_name, job_description, location) VALUES (?, ?, ?, ?)';
@@ -128,7 +139,7 @@ app.post('/jobListings', async (req, res) => {
 // ------------------------ Fetch Job Listings ------------------------
 app.get('/jobListings', async (req, res) => {
     try {
-        const query = 'SELECT * FROM job_listings'; // Removed ORDER BY created_at
+        const query = 'SELECT * FROM job_listings'; 
         const connection = await dbPool.getConnection();
         const [rows] = await connection.execute(query);
         connection.release();
@@ -140,11 +151,11 @@ app.get('/jobListings', async (req, res) => {
     }
 });
 
-// GET /jobListings/search - Fetch job listings based on search criteria
+// ------------------------ Search Job Listings ------------------------
 app.get('/jobListings/search', async (req, res) => {
     try {
         const { query } = req.query; // Retrieve the search query from the request
-        let sqlQuery = 'SELECT * FROM job_listings WHERE job_title LIKE ? OR company_name LIKE ?'; // Removed ORDER BY created_at
+        let sqlQuery = 'SELECT * FROM job_listings WHERE job_title LIKE ? OR company_name LIKE ?'; 
         const connection = await dbPool.getConnection();
         const [rows] = await connection.execute(sqlQuery, [`%${query}%`, `%${query}%`]);
         connection.release();

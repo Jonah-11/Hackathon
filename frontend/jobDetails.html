@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Details</title>
-    <link rel="stylesheet" href="css/jobDetails.css"> <!-- Update your CSS file as needed -->
+    <link rel="stylesheet" href="css/jobDetails.css">
 </head>
 
 <body>
@@ -13,11 +13,9 @@
         <h1>Job Details</h1>
     </header>
 
-    <main>
-        <div id="jobDetailsContainer" class="job-details">
-            <p>Loading job details...</p>
-        </div>
-    </main>
+    <div id="jobDetailsContainer">
+        <!-- Job details will be populated here -->
+    </div>
 
     <footer>
         <p>&copy; 2024 WorkFinder | All Rights Reserved</p>
@@ -27,12 +25,12 @@
         async function fetchJobDetails() {
             const params = new URLSearchParams(window.location.search);
             const jobId = params.get('id');
-    
+
             if (!jobId) {
                 document.getElementById('jobDetailsContainer').innerHTML = '<p>No job ID provided.</p>';
                 return;
             }
-    
+
             try {
                 const response = await fetch(`https://hackathon-production-c8fa.up.railway.app/jobListings/${jobId}`);
                 if (response.ok) {
@@ -52,11 +50,10 @@
                 document.getElementById('jobDetailsContainer').innerHTML = '<p>An error occurred while fetching job details.</p>';
             }
         }
-    
+
         // Call the function when the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', fetchJobDetails);
     </script>
-    
 </body>
 
 </html>

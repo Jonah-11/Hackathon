@@ -1,136 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Job details for the Work Finder platform. Find your dream job here!">
-    <title>Job Details | Work Finder</title>
-    <link rel="stylesheet" href="css/jobDetails.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Simple loading spinner style */
-        #loadingSpinner {
-            display: none;
-            text-align: center;
-            font-size: 1.5em;
-            margin-top: 20px;
-        }
-    </style>
+    <title>Job Details</title>
+    <link rel="stylesheet" href="css/jobDetails.css"> <!-- Update your CSS file as needed -->
 </head>
+
 <body>
     <header>
-        <div class="container1">
-            <div class="logo">
-                <a href="#"><img src="assets/images/logo.jpg" alt="Work Finder Logo" /></a>
-                <div class="logo-text">
-                    <p>Work Finder</p>
-                    <p>A subsidiary of Ecomech Innovations</p>
-                </div>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="jobseeker.html">Go back</a></li>
-                </ul>
-            </nav>
-        </div>
+        <h1>Job Details</h1>
     </header>
-    
-    <main id="jobDetailsContainer">
-        <div id="loadingSpinner">Loading...</div>
-        <h2 id="jobTitle"></h2>
-        <div class="job-detail">
-            <p><strong>Company:</strong> <span id="companyName"></span></p>
-            <p><strong>Location:</strong> <span id="location"></span></p>
-            <p><strong>Description:</strong></p>
-            <p id="jobDescription"></p>
-            <p><strong>Contact Email:</strong> <span id="contactEmail"></span></p>
-            <p><strong>Contact Phone:</strong> <span id="contactPhone"></span></p>
-            <p><strong>Application Deadline:</strong> <span id="deadline"></span></p>
-        </div>
-        <button id="applyButton">Apply Now</button>
 
-        <p>Send your CV and applications through the above email or call the number provided for more information. Good luck!</p>
-    </main>
-
-    <div class="support-box">
-        <p>Did you find a job that suits you? Support us through:</p>
-        <p>Mpesa: 0799610782</p>
-        <p>Paypal: jonahjjed@gmail.com</p>
+    <div id="jobDetailsContainer">
+        <p>Loading job details...</p>
     </div>
 
     <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>About Us</h4>
-                <p>We envision a future where everyone is connected to a job suitable to their respective skills.</p>
-            </div>
-            <div class="footer-section">
-                <h4>Contact Us</h4>
-                <p>Email: info@workfinder.com<br>Phone: +254 799 610782</p>
-            </div>
-        </div>
-        <div class="social-icons">
-            <h4>Follow Us On:</h4>
-            <div class="icon-container">
-                <a href="https://twitter.com/knightdale38085" target="_blank" class="twitter" aria-label="Follow us on Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="https://www.facebook.com/profile.php?id=100080257234206" target="_blank" class="facebook" aria-label="Follow us on Facebook"><i class="fab fa-facebook"></i></a>
-                <a href="https://wa.me/+254799610782" target="_blank" class="whatsapp" aria-label="Contact us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.linkedin.com/in/jonathan-edwards-147541318/" target="_blank" class="linkedin" aria-label="Connect with us on LinkedIn"><i class="fab fa-linkedin"></i></a>
-            </div>
-        </div>
         <p>&copy; 2024 WorkFinder | All Rights Reserved</p>
     </footer>
 
     <script>
         async function fetchJobDetails() {
             const params = new URLSearchParams(window.location.search);
-            const jobId = params.get('id');
+            const jobId = params.get('id'); // Get the job ID from the URL
 
             if (!jobId) {
-                document.getElementById('jobDetailsContainer').innerHTML = '<p>No job ID provided. Please check your link.</p>';
+                document.getElementById('jobDetailsContainer').innerHTML = '<p>No job ID provided.</p>';
                 return;
             }
-
-            // Show loading spinner
-            document.getElementById('loadingSpinner').style.display = 'block';
 
             try {
                 const response = await fetch(`https://hackathon-production-c8fa.up.railway.app/jobListings/${jobId}`);
                 if (response.ok) {
                     const job = await response.json();
-                    document.getElementById('jobTitle').innerText = job.job_title || 'No title available';
-                    document.getElementById('companyName').innerText = job.company_name || 'No company name available';
-                    document.getElementById('location').innerText = job.location || 'No location provided';
-                    document.getElementById('jobDescription').innerText = job.job_description || 'No description available';
-                    document.getElementById('contactEmail').innerText = job.contact_email || 'No email provided';
-                    document.getElementById('contactPhone').innerText = job.contact_phone || 'No phone number provided';
-                    document.getElementById('deadline').innerText = job.deadline || 'No deadline provided';
+                    document.getElementById('jobDetailsContainer').innerHTML = `
+                        <h2>${job.job_title}</h2>
+                        <p><strong>Company:</strong> ${job.company_name}</p>
+                        <p><strong>Location:</strong> ${job.location}</p>
+                        <p><strong>Deadline:</strong> ${job.deadline || 'No deadline specified'}</p>
+                        <p><strong>Description:</strong> ${job.description || 'No description available.'}</p>
+                    `;
                 } else {
-                    document.getElementById('jobDetailsContainer').innerHTML = '<p>No job details available. Please try again later.</p>';
+                    document.getElementById('jobDetailsContainer').innerHTML = '<p>No job details available.</p>';
                 }
             } catch (error) {
                 console.error('Error fetching job details:', error);
-                document.getElementById('jobDetailsContainer').innerHTML = '<p>An error occurred while fetching job details. Please check your connection and try again.</p>';
-            } finally {
-                // Hide loading spinner
-                document.getElementById('loadingSpinner').style.display = 'none';
+                document.getElementById('jobDetailsContainer').innerHTML = '<p>An error occurred while fetching job details.</p>';
             }
         }
-
-        // Handle Apply Now button click
-        document.getElementById('applyButton').addEventListener('click', function() {
-            const jobTitle = document.getElementById('jobTitle').innerText;
-            const contactEmail = document.getElementById('contactEmail').innerText;
-
-            // Create a mailto link with the job title as the subject
-            const mailtoLink = `mailto:${contactEmail}?subject=Application for ${encodeURIComponent(jobTitle)}`;
-
-            // Redirect the user to the email client
-            window.location.href = mailtoLink;
-        });
 
         // Fetch job details when the page loads
         window.onload = fetchJobDetails;
     </script>
 </body>
+
 </html>

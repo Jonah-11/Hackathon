@@ -23,156 +23,31 @@ header {
     color: white;
 }
 
-/* Section styles */
-section {
-    display: flex;
-    justify-content: space-around;
-    margin: 40px;
-}
-
-/* Option box styling */
-.option {
-    background-color: white;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-    width: 300px;
-}
-
-.option:hover {
-    transform: translateY(-5px);
-}
-
-.option-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-.option h2 {
-    color: #333;
-}
-
-/* Button styling */
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    margin-top: 20px;
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.btn:hover {
-    background-color: #45a049;
-}
-
-.container1 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-}
-
-/* Logo container should be a flex column to stack text */
-.logo {
-    display: flex;
-    align-items: center;
-}
-
-.logo img {
-    margin-right: 15px;
-    height: 50px;
-}
-
-.logo p {
-    margin: 0;
-    font-size: 1.5em;
-    color: white;
-    font-family: 'Dancing Script', cursive;
-}
-
-/* Container for the Work Finder text */
-.logo-text {
-    display: flex;
-    flex-direction: column; /* Stack the texts vertically */
-}
-
-.logo-text p:first-child {
-    margin-bottom: 5px; /* Adjust the spacing between Work Finder and subsidiary text */
-    font-size: 1.5em;
-    color: white;
-}
-
-.logo-text p:nth-child(2) {
-    font-size: 0.9em;
-    color: #ccc; /* Lighter color for the subsidiary text */
-}
-
-nav {
-    margin-left: auto;
-}
-
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin-left: 15px;
-}
-
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-nav ul li a:hover {
-    color: #f39c12;
-}
-
-
-/* Logout button styles */
-#logoutButton {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#logoutButton:hover {
-    background-color: #c82333;
-}
-
-/* Main container styles */
-main {
+/* Main container for job details */
+#jobDetailsContainer {
     flex-grow: 1;
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Ensures it takes full width on smaller screens */
-    max-width: 700px; /* Prevents stretching too much */
+    display: flex;
+    justify-content: center; /* Center align the job details box */
+    padding: 20px; /* Padding around the container */
 }
 
-/* Job title styles */
+/* Job details box styling */
+#jobDetailsBox {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    max-width: 600px; /* Maximum width */
+    width: 100%; /* Full width for smaller screens */
+}
+
 #jobTitle {
     font-size: 24px;
     margin-bottom: 15px;
     color: #007BFF;
 }
 
+/* General styles for job details */
 p {
     margin: 10px 0;
     line-height: 1.5;
@@ -262,15 +137,6 @@ footer {
 
 .support-box p {
     margin: 5px 0; /* Margin between paragraphs */
-}
-
-
-.support-box p {
-    margin: 5px 0;
-}
-
-.support-box strong {
-    color: #007BFF; /* Make the contact details more prominent */
 }
 
 /* Ensure it does not overlap with smaller screens */

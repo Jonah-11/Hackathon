@@ -35,6 +35,22 @@
             <p><strong>Contact Email:</strong> <span id="contactEmail"></span></p>
             <p><strong>Contact Phone:</strong> <span id="contactPhone"></span></p>
         </div>
+        <button id="applyButton">Apply Now</button> <!-- Add the apply button here -->
+
+    <script>
+        document.getElementById('applyButton').addEventListener('click', function() {
+            // Get job title and contact email from the job details
+            const jobTitle = new URLSearchParams(window.location.search).get('jobTitle');
+            const contactEmail = document.getElementById('contactEmail').innerText;
+            
+            // Create a mailto link with the job title as the subject
+            const mailtoLink = `mailto:${contactEmail}?subject=Application for ${encodeURIComponent(jobTitle)}`;
+
+            // Redirect the user to the email client
+            window.location.href = mailtoLink;
+        });
+    </script>
+
         <p>Send your CV and applications through the above email or call the number provided for more information. Good luck!</p>
     </main>
 
@@ -104,13 +120,20 @@
             }
         }
 
-        window.onload = fetchJobDetails;
+        function initialize() {
+            fetchJobDetails();
 
-        document.getElementById('applyButton').addEventListener('click', function() {
-            const jobId = new URLSearchParams(window.location.search).get('jobId');
-            const jobTitle = new URLSearchParams(window.location.search).get('jobTitle');
-            window.location.href = `apply.html?jobId=${jobId}&jobTitle=${encodeURIComponent(jobTitle)}`;
-        });
+            const applyButton = document.getElementById('applyButton');
+            if (applyButton) {
+                applyButton.addEventListener('click', function() {
+                    const jobId = new URLSearchParams(window.location.search).get('jobId');
+                    const jobTitle = new URLSearchParams(window.location.search).get('jobTitle');
+                    window.location.href = `apply.html?jobId=${jobId}&jobTitle=${encodeURIComponent(jobTitle)}`;
+                });
+            }
+        }
+
+        window.onload = initialize; // Call initialize function on window load
     </script>
 </body>
 </html>

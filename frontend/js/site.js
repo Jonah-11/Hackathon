@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Post a new job listing
-    // Post a new job listing
     async function postJob(event) {
         event.preventDefault();
 
@@ -45,66 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Register a new user
-    async function registerUser(event) {
-        event.preventDefault();
-
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        try {
-            const response = await fetch('https://hackathon-production-c8fa.up.railway.app/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email, password }),
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                alert(data.message);
-                window.location.href = 'login.html'; // Redirect to login page on success
-            } else {
-                alert(data.error || 'Registration failed.');
-            }
-        } catch (error) {
-            console.error('Error during registration:', error);
-            alert('An error occurred while registering.');
-        }
-    }
-
-    // Login an existing user
-    async function loginUser(event) {
-        event.preventDefault();
-
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        try {
-            const response = await fetch('https://hackathon-production-c8fa.up.railway.app/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                alert('Login successful!');
-                window.location.href = 'entrepreneur.html'; // Redirect to entrepreneur page
-            } else {
-                alert(data.error || 'Login failed.');
-            }
-        } catch (error) {
-            console.error('Error during login:', error);
-            alert('An error occurred while logging in.');
-        }
-    }
-
     // Fetch job listings
     async function fetchJobListings() {
         const jobList = document.getElementById('jobList');
@@ -136,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p><strong>Company:</strong> ${job.company_name}</p>
                     <p><strong>Location:</strong> ${job.location}</p>
                     <p><strong>Description:</strong> ${job.job_description}</p>
-                    <button class="apply-btn" data-job='${JSON.stringify(job)}'>Apply</button>
+                    <button class="apply-btn" data-job-id="${job.id}">Apply</button>
                 `;
                 jobList.appendChild(jobElement);
             });
@@ -154,47 +93,62 @@ document.addEventListener('DOMContentLoaded', function () {
         const applyButtons = document.querySelectorAll('.apply-btn');
         applyButtons.forEach(button => {
             button.addEventListener('click', function() {
-                const job = JSON.parse(this.getAttribute('data-job'));
-                localStorage.setItem('selectedJob', JSON.stringify(job)); // Store the job details
-                window.location.href = 'jobDetails.html'; // Redirect to job details page
+                const jobId = this.getAttribute('data-job-id');
+                window.location.href = `jobDetails.html?id=${jobId}`; // Redirect to job details page with job ID
             });
         });
     }
 
-    // Logout functionality
-    function logoutUser() {
-        localStorage.removeItem('token');
-        alert('You have been logged out.');
-        window.location.href = 'login.html'; // Redirect to login page
+    // Fetch job details based on job ID
+    async function fetchJobDetails() {
+        const params = new URLSearchParams(window.location.search);
+        const jobId = params.get('id');
+
+        if (!jobId) {
+            document.getElementById('jobDetailsContainer').innerHTML = '<p>No job ID provided.</p>';
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://hackathon-production-c8fa.up.railway.app/jobListings/${jobId}`);
+            if (response.ok) {
+                const job = await response.json();
+                document.getElementById('jobDetailsContainer').innerHTML = `
+                    <h2>${job.job_title}</h2>
+                    <p><strong>Company:</strong> ${job.company_name}</p>
+                    <p><strong>Location:</strong> ${job.location}</p>
+                    <p><strong>Deadline:</strong> ${job.deadline || 'No deadline specified'}</p>
+                    <p><strong>Description:</strong> ${job.job_description || 'No description available.'}</p>
+                `;
+            } else {
+                document.getElementById('jobDetailsContainer').innerHTML = '<p>No job details available.</p>';
+            }
+        } catch (error) {
+            console.error('Error fetching job details:', error);
+            document.getElementById('jobDetailsContainer').innerHTML = '<p>An error occurred while fetching job details.</p>';
+        }
     }
 
-    // Attach event listeners for forms and logout button
+    // Attach event listeners for forms and fetch job listings
     const jobForm = document.getElementById('jobForm');
     if (jobForm) {
         jobForm.addEventListener('submit', postJob);
-    }
-
-    const registerForm = document.getElementById('registerForm');
-    if (registerForm) {
-        registerForm.addEventListener('submit', registerUser);
-    }
-
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', loginUser);
-    }
-
-    const logoutButton = document.getElementById('logoutButton');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', logoutUser);
     }
 
     // Fetch job listings on page load, but only if on the jobseeker page
     if (document.getElementById('jobList')) {
         fetchJobListings();
     }
+
+    // Fetch job details on job details page
+    if (document.getElementById('jobDetailsContainer')) {
+        fetchJobDetails();
+    }
 });
 
+// Set minimum date for deadline input
 const deadlineInput = document.getElementById('deadline');
-const today = new Date().toISOString().split('T')[0]; // Get today's date in yyyy-mm-dd format
-deadlineInput.setAttribute('min', today); // Set the minimum date to today
+if (deadlineInput) {
+    const today = new Date().toISOString().split('T')[0]; // Get today's date in yyyy-mm-dd format
+    deadlineInput.setAttribute('min', today); // Set the minimum date to today
+}

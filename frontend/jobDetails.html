@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Details</title>
+    <meta name="description" content="Job details for the Work Finder platform. Find your dream job here!">
+    <title>Job Details | Work Finder</title>
     <link rel="stylesheet" href="css/jobDetails.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Simple loading spinner style */
+        #loadingSpinner {
+            display: none;
+            text-align: center;
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="container1">
             <div class="logo">
-                <a href="#"><img src="assets/images/logo.jpg" alt="Logo" /></a>
+                <a href="#"><img src="assets/images/logo.jpg" alt="Work Finder Logo" /></a>
                 <div class="logo-text">
                     <p>Work Finder</p>
                     <p>A subsidiary of Ecomech Innovations</p>
@@ -26,6 +36,7 @@
     </header>
     
     <main id="jobDetailsContainer">
+        <div id="loadingSpinner">Loading...</div>
         <h2 id="jobTitle"></h2>
         <div class="job-detail">
             <p><strong>Company:</strong> <span id="companyName"></span></p>
@@ -51,7 +62,7 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h4>About Us</h4>
-                <p>We envision a future where everyone is connected to a job suitable to his/her respective skills.</p>
+                <p>We envision a future where everyone is connected to a job suitable to their respective skills.</p>
             </div>
             <div class="footer-section">
                 <h4>Contact Us</h4>
@@ -61,10 +72,10 @@
         <div class="social-icons">
             <h4>Follow Us On:</h4>
             <div class="icon-container">
-                <a href="https://twitter.com/knightdale38085" target="_blank" class="twitter"><i class="fab fa-twitter"></i></a>
-                <a href="https://www.facebook.com/profile.php?id=100080257234206" target="_blank" class="facebook"><i class="fab fa-facebook"></i></a>
-                <a href="https://wa.me/+254799610782" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.linkedin.com/in/jonathan-edwards-147541318/" target="_blank" class="linkedin"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com/knightdale38085" target="_blank" class="twitter" aria-label="Follow us on Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=100080257234206" target="_blank" class="facebook" aria-label="Follow us on Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://wa.me/+254799610782" target="_blank" class="whatsapp" aria-label="Contact us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/in/jonathan-edwards-147541318/" target="_blank" class="linkedin" aria-label="Connect with us on LinkedIn"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
         <p>&copy; 2024 WorkFinder | All Rights Reserved</p>
@@ -73,12 +84,15 @@
     <script>
         async function fetchJobDetails() {
             const params = new URLSearchParams(window.location.search);
-            const jobId = params.get('id'); // Assuming you pass the ID as a query parameter
+            const jobId = params.get('id');
 
             if (!jobId) {
-                document.getElementById('jobDetailsContainer').innerHTML = '<p>No job ID provided.</p>';
+                document.getElementById('jobDetailsContainer').innerHTML = '<p>No job ID provided. Please check your link.</p>';
                 return;
             }
+
+            // Show loading spinner
+            document.getElementById('loadingSpinner').style.display = 'block';
 
             try {
                 const response = await fetch(`https://hackathon-production-c8fa.up.railway.app/jobListings/${jobId}`);
@@ -92,11 +106,14 @@
                     document.getElementById('contactPhone').innerText = job.contact_phone || 'No phone number provided';
                     document.getElementById('deadline').innerText = job.deadline || 'No deadline provided';
                 } else {
-                    document.getElementById('jobDetailsContainer').innerHTML = '<p>No job details available.</p>';
+                    document.getElementById('jobDetailsContainer').innerHTML = '<p>No job details available. Please try again later.</p>';
                 }
             } catch (error) {
                 console.error('Error fetching job details:', error);
-                document.getElementById('jobDetailsContainer').innerHTML = '<p>An error occurred while fetching job details.</p>';
+                document.getElementById('jobDetailsContainer').innerHTML = '<p>An error occurred while fetching job details. Please check your connection and try again.</p>';
+            } finally {
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
             }
         }
 

@@ -35,7 +35,6 @@
         </div>
     </div>
     
-    
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -58,7 +57,29 @@
         </div>
         <p>&copy; 2024 WorkFinder | All Rights Reserved</p>
     </footer>
-    
-    <script src="js/site.js"></script> <!-- Link to the site.js file -->
+    <script src="js/site.js"></script>
+    <script>
+        // Example job data, typically fetched from an API or a database
+        const jobData = {
+            title: "Software Engineer",
+            company: "Tech Innovations",
+            location: "Nairobi, Kenya",
+            salary: "Ksh 80,000 - 120,000",
+            description: "We are looking for a skilled Software Engineer to join our team..."
+        };
+
+        // Function to populate job details
+        function populateJobDetails(job) {
+            // Add job information to the existing job details box
+            document.getElementById('jobTitle').textContent = job.title || "Job Title Not Available";
+            document.getElementById('companyName').textContent = job.company || "Company Not Specified";
+            document.getElementById('jobLocation').textContent = job.location || "Location Not Provided";
+            document.getElementById('').textContent = job.salary || "Salary Not Listed";
+            document.getElementById('jobDescription').textContent = job.description || "Description Not Available";
+        }
+
+        // Call the function to populate the job details on page load
+        populateJobDetails(jobData);
+    </script>
 </body>
 </html>

@@ -42,7 +42,7 @@
             // Handle Apply Now button click
             document.getElementById('applyButton').addEventListener('click', function() {
                 // Get job title and contact email from the job details
-                const jobTitle = new URLSearchParams(window.location.search).get('jobTitle');
+                const jobTitle = document.getElementById('jobTitle').innerText;
                 const contactEmail = document.getElementById('contactEmail').innerText;
 
                 // Create a mailto link with the job title as the subject
@@ -88,8 +88,8 @@
     <script>
         async function fetchJobDetails() {
             const params = new URLSearchParams(window.location.search);
-            const jobId = params.get('jobId');
-            const jobTitle = params.get('jobTitle');
+            const jobId = params.get('id'); // Use 'id' from the query string
+            const jobTitle = params.get('job_title'); // Use 'job_title' from the query string
 
             if (!jobId || !jobTitle) {
                 alert('Job ID or Job Title not found!');
@@ -97,6 +97,7 @@
             }
 
             try {
+                // Fetch job details based on the 'id' and 'job_title'
                 const response = await fetch(`https://hackathon-production-c8fa.up.railway.app/jobListings/${jobId}?jobTitle=${encodeURIComponent(jobTitle)}`, {
                     method: 'GET',
                     headers: {
@@ -124,15 +125,6 @@
 
         function initialize() {
             fetchJobDetails();
-
-            const applyButton = document.getElementById('applyButton');
-            if (applyButton) {
-                applyButton.addEventListener('click', function() {
-                    const jobId = new URLSearchParams(window.location.search).get('jobId');
-                    const jobTitle = new URLSearchParams(window.location.search).get('jobTitle');
-                    window.location.href = `apply.html?jobId=${jobId}&jobTitle=${encodeURIComponent(jobTitle)}`;
-                });
-            }
         }
 
         window.onload = initialize; // Call initialize function on window load

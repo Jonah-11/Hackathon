@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Post a new job listing
+    // Post a new job listing
     async function postJob(event) {
         event.preventDefault();
 
@@ -10,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const jobDescription = document.getElementById('description').value;
         const contactEmail = document.getElementById('contactEmail').value;
         const contactPhone = document.getElementById('contactPhone').value;
+        const deadline = document.getElementById('deadline').value; // Get the deadline value
         const token = localStorage.getItem('token');
 
         try {
@@ -26,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     job_description: jobDescription,
                     contact_email: contactEmail,
                     contact_phone: contactPhone,
+                    deadline: deadline, // Include the deadline in the request body
                 }),
             });
 

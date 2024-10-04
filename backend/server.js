@@ -174,6 +174,28 @@ app.get('/jobListings/search', async (req, res) => {
     }
 });
 
+app.get('/jobListings/:id', async (req, res) => {
+    const jobId = req.params.id;
+    const jobTitle = req.query.jobTitle;
+
+    try {
+        const query = 'SELECT * FROM job_listings WHERE id = ? AND job_title = ?';
+        const connection = await dbPool.getConnection();
+        const [rows] = await connection.execute(query, [jobId, jobTitle]);
+        connection.release();
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'Job not found' });
+        }
+
+        res.json(rows[0]); // Send the job details
+    } catch (error) {
+        console.error('Error fetching job details:', error);
+        res.status(500).json({ message: 'Error fetching job details' });
+    }
+});
+
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);

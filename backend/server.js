@@ -128,11 +128,11 @@ app.post('/jobListings', async (req, res) => {
     try {
         // Update the query to include contact_email and contact_phone
         const query = `
-            INSERT INTO job_listings (job_title, company_name, job_description, location, contact_email, contact_phone) 
+            INSERT INTO job_listings (job_title, company_name, job_description, location, contact_email, contact_phone, deadline) 
             VALUES (?, ?, ?, ?, ?, ?)
         `;
         const connection = await dbPool.getConnection();
-        await connection.execute(query, [job_title, company_name, job_description, location, contact_email, contact_phone]);
+        await connection.execute(query, [job_title, company_name, job_description, location, contact_email, contact_phone, deadline]);
         connection.release();
 
         res.status(201).json({ message: "Job listing created successfully." });

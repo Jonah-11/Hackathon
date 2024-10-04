@@ -34,6 +34,7 @@
             <p id="jobDescription"></p>
             <p><strong>Contact Email:</strong> <span id="contactEmail"></span></p>
             <p><strong>Contact Phone:</strong> <span id="contactPhone"></span></p>
+            <p><strong>Application Deadline:</strong> <span id="deadline"></span></p> <!-- New Deadline Display -->
         </div>
         <!-- Apply Now button that triggers email client -->
         <button id="applyButton">Apply Now</button>
@@ -114,6 +115,7 @@
                     document.getElementById('jobDescription').innerText = job.job_description;
                     document.getElementById('contactEmail').innerText = job.contact_email;
                     document.getElementById('contactPhone').innerText = job.contact_phone;
+                    document.getElementById('deadline').innerText = job.deadline ? job.deadline : 'No deadline provided'; // Display deadline or a default message
                 } else {
                     document.getElementById('jobDetailsContainer').innerHTML = '<p>No job details available.</p>';
                 }

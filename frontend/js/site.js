@@ -191,3 +191,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchJobListings();
     }
 });
+
+const deadlineInput = document.getElementById('deadline');
+const today = new Date().toISOString().split('T')[0]; // Get today's date in yyyy-mm-dd format
+deadlineInput.setAttribute('min', today); // Set the minimum date to today

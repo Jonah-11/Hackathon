@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Details</title>
-    <link rel="stylesheet" href="css/jobDetails.css"> <!-- Link your CSS file if needed -->
+    <link rel="stylesheet" href="css/jobDetails.css"> <!-- Ensure the correct path to your CSS file -->
 </head>
 <body>
     <header>
         <h1>Job Details</h1>
-        <button id="logoutButton">Logout</button> <!-- Optional: Add a logout button -->
     </header>
     <main id="jobDetailsContainer">
         <h2 id="jobTitle"></h2>
@@ -19,22 +18,23 @@
         <p id="jobDescription"></p>
         <p><strong>Contact Email:</strong> <span id="contactEmail"></span></p>
         <p><strong>Contact Phone:</strong> <span id="contactPhone"></span></p>
-        <button id="applyButton">Apply Now</button>
+        <p>Send your cv and applications through the above email or call the number provided for more information. Good luck!</p>
     </main>
 
     <script>
-        // Function to fetch job details based on job ID
+        // Function to fetch job details based on job ID and job title
         async function fetchJobDetails() {
             const params = new URLSearchParams(window.location.search);
             const jobId = params.get('jobId');
+            const jobTitle = params.get('jobTitle'); // Fetch job title from URL
 
-            if (!jobId) {
-                alert('Job ID not found!');
+            if (!jobId || !jobTitle) {
+                alert('Job ID or Job Title not found!');
                 return;
             }
 
             try {
-                const response = await fetch(`https://hackathon-production-c8fa.up.railway.app/jobListings/${jobId}`, {
+                const response = await fetch(`https://hackathon-production-c8fa.up.railway.app/jobListings/${jobId}?jobTitle=${encodeURIComponent(jobTitle)}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -64,7 +64,10 @@
 
         // Handle apply button click
         document.getElementById('applyButton').addEventListener('click', function() {
-            alert('Thank you for your application! We will contact you soon.');
+            const jobId = new URLSearchParams(window.location.search).get('jobId');
+            const jobTitle = new URLSearchParams(window.location.search).get('jobTitle');
+            // Redirect with jobId and jobTitle in URL
+            window.location.href = `apply.html?jobId=${jobId}&jobTitle=${encodeURIComponent(jobTitle)}`;
         });
     </script>
 </body>

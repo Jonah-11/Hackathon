@@ -31,24 +31,24 @@
         <h2>Post a Job</h2>
         <form id="jobForm">
             <label for="jobTitle">Job Title:</label>
-            <input type="text" id="jobTitle" name="jobTitle" required>
+            <input type="text" id="jobTitle" name="jobTitle" required placeholder="e.g. Lorry Driver">
 
             <label for="companyName">Company Name:</label>
-            <input type="text" id="companyName" name="companyName" required>
+            <input type="text" id="companyName" name="companyName" required placeholder="e.g. Kijiko Tea Plantation">
 
             <label for="location">Location:</label>
-            <input type="text" id="location" name="location" required>
+            <input type="text" id="location" name="location" required placeholder="e.g. Kericho, Kenya">
 
             <label for="description">Job Description:</label>
-            <textarea id="description" name="description" rows="4" required></textarea>
+            <textarea id="description" name="description" rows="4" required placeholder="e.g. An experienced driver with 5+ years experience needed. Minimum age is 18 years. A valid driving license is needed. Attach a copy of the relevant files to your CV when sending them to the email provided. If eligible you are advised to apply."></textarea>
+
 
             <!-- New fields for contact information -->
-             <p>The contact will not be displayed with the job advertised </p>
             <label for="contactEmail">Contact Email:</label>
-            <input type="email" id="contactEmail" name="contactEmail" required>
+            <input type="email" id="contactEmail" name="contactEmail" required placeholder="e.g. info@kijikotea.com">
 
             <label for="contactPhone">Contact Phone:</label>
-            <input type="tel" id="contactPhone" name="contactPhone" required>
+            <input type="tel" id="contactPhone" name="contactPhone" required placeholder="+254 712345678">
 
             <button type="submit">Post Job</button>
         </form>

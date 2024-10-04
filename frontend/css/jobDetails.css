@@ -5,24 +5,139 @@
     box-sizing: border-box;
 }
 
-/* Body styles */
-body {
+/* Ensure body takes up the full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #e1f6fc;
     color: #333;
 }
 
-/* Header styles */
 header {
-    background-color: #007BFF;
-    color: white;
-    padding: 20px;
     text-align: center;
+    padding: 20px;
+    background-color: #2c3e50; /* Dark Blue for header */
+    color: white;
 }
 
-header h1 {
-    margin: 0;
+/* Section styles */
+section {
+    display: flex;
+    justify-content: space-around;
+    margin: 40px;
 }
+
+/* Option box styling */
+.option {
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    width: 300px;
+}
+
+.option:hover {
+    transform: translateY(-5px);
+}
+
+.option-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.option h2 {
+    color: #333;
+}
+
+/* Button styling */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.container1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+/* Logo container should be a flex column to stack text */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    margin-right: 15px;
+    height: 50px;
+}
+
+.logo p {
+    margin: 0;
+    font-size: 1.5em;
+    color: white;
+    font-family: 'Dancing Script', cursive;
+}
+
+/* Container for the Work Finder text */
+.logo-text {
+    display: flex;
+    flex-direction: column; /* Stack the texts vertically */
+}
+
+.logo-text p:first-child {
+    margin-bottom: 5px; /* Adjust the spacing between Work Finder and subsidiary text */
+    font-size: 1.5em;
+    color: white;
+}
+
+.logo-text p:nth-child(2) {
+    font-size: 0.9em;
+    color: #ccc; /* Lighter color for the subsidiary text */
+}
+
+nav {
+    margin-left: auto;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #f39c12;
+}
+
 
 /* Logout button styles */
 #logoutButton {
@@ -39,23 +154,25 @@ header h1 {
 }
 
 /* Main container styles */
-#jobDetailsContainer {
+main {
+    flex-grow: 1;
     max-width: 700px;
     margin: 20px auto;
     padding: 20px;
     background-color: white;
-    border-radius: 10px; /* Rounded corners */
+    border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Ensures it takes full width on smaller screens */
+    max-width: 700px; /* Prevents stretching too much */
 }
 
 /* Job title styles */
 #jobTitle {
     font-size: 24px;
     margin-bottom: 15px;
-    color: #007BFF; /* Use the same color as the header */
+    color: #007BFF;
 }
 
-/* Paragraph styles */
 p {
     margin: 10px 0;
     line-height: 1.5;
@@ -76,4 +193,92 @@ p {
 
 #applyButton:hover {
     background-color: #218838;
+}
+
+/* Footer styles */
+footer {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 10%;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px;
+    background-color: rgba(44, 62, 80, 0.9);
+}
+
+.social-icons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.social-icons a {
+    color: #fff;
+    margin: 0 15px;
+    font-size: 30px;
+    transition: transform 0.3s;
+}
+
+.social-icons a:hover {
+    color: #f39c12;
+    transform: scale(1.2);
+}
+
+/* Support box styles */
+.support-box {
+    position: fixed;
+    bottom: 280px; /* Adjust this value to move it up or down */
+    right: 20px;  /* Adjust this value to move it left or right */
+    background-color: white;
+    border-radius: 12px; /* Rounded corners */
+    padding: 15px; /* Inner spacing */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for a professional look */
+    max-width: 250px; /* Maximum width */
+    z-index: 1000; /* Ensures it stays above other content */
+    font-family: Arial, sans-serif; /* Consistent font */
+    color: #333; /* Text color */
+}
+
+.support-box p {
+    margin: 5px 0; /* Margin between paragraphs */
+}
+
+
+.support-box p {
+    margin: 5px 0;
+}
+
+.support-box strong {
+    color: #007BFF; /* Make the contact details more prominent */
+}
+
+/* Ensure it does not overlap with smaller screens */
+@media (max-width: 768px) {
+    .support-box {
+        bottom: 70px;
+        right: 10px;
+        width: 200px;
+        padding: 10px;
+    }
 }

@@ -4,29 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Details</title>
-    <link rel="stylesheet" href="css/jobDetails.css"> <!-- Ensure the correct path to your CSS file -->
+    <link rel="stylesheet" href="css/jobDetails.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>Job Details</h1>
+        <div class="container1">
+            <div class="logo">
+                <a href="#"><img src="assets/images/logo.jpg" alt="Logo" /></a>
+                <div class="logo-text">
+                    <p>Work Finder</p>
+                    <p>A subsidiary of Ecomech Innovations</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="jobseeker.html">Go back</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
+    
     <main id="jobDetailsContainer">
         <h2 id="jobTitle"></h2>
-        <p><strong>Company:</strong> <span id="companyName"></span></p>
-        <p><strong>Location:</strong> <span id="location"></span></p>
-        <p><strong>Description:</strong></p>
-        <p id="jobDescription"></p>
-        <p><strong>Contact Email:</strong> <span id="contactEmail"></span></p>
-        <p><strong>Contact Phone:</strong> <span id="contactPhone"></span></p>
-        <p>Send your cv and applications through the above email or call the number provided for more information. Good luck!</p>
+        <div class="job-detail">
+            <p><strong>Company:</strong> <span id="companyName"></span></p>
+            <p><strong>Location:</strong> <span id="location"></span></p>
+            <p><strong>Description:</strong></p>
+            <p id="jobDescription"></p>
+            <p><strong>Contact Email:</strong> <span id="contactEmail"></span></p>
+            <p><strong>Contact Phone:</strong> <span id="contactPhone"></span></p>
+        </div>
+        <p>Send your CV and applications through the above email or call the number provided for more information. Good luck!</p>
     </main>
 
+    <div class="support-box">
+        <p>Did you find a job that suits you? Support us through:</p>
+        <p>Mpesa: 0799610782</p>
+        <p>Paypal: jonahjjed@gmail.com</p>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>We envision a future where everyone is connected to a job suitable to his/her respective skills.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Email: info@workfinder.com<br>Phone: +254 799 610782</p>
+            </div>
+        </div>
+        <div class="social-icons">
+            <h4>Follow Us On:</h4>
+            <div class="icon-container">
+                <a href="https://twitter.com/knightdale38085" target="_blank" class="twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=100080257234206" target="_blank" class="facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://wa.me/+254799610782" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/in/jonathan-edwards-147541318/" target="_blank" class="linkedin"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+        <p>&copy; 2024 WorkFinder | All Rights Reserved</p>
+    </footer>
+
     <script>
-        // Function to fetch job details based on job ID and job title
         async function fetchJobDetails() {
             const params = new URLSearchParams(window.location.search);
             const jobId = params.get('jobId');
-            const jobTitle = params.get('jobTitle'); // Fetch job title from URL
+            const jobTitle = params.get('jobTitle');
 
             if (!jobId || !jobTitle) {
                 alert('Job ID or Job Title not found!');
@@ -59,14 +104,11 @@
             }
         }
 
-        // Load job details on page load
         window.onload = fetchJobDetails;
 
-        // Handle apply button click
         document.getElementById('applyButton').addEventListener('click', function() {
             const jobId = new URLSearchParams(window.location.search).get('jobId');
             const jobTitle = new URLSearchParams(window.location.search).get('jobTitle');
-            // Redirect with jobId and jobTitle in URL
             window.location.href = `apply.html?jobId=${jobId}&jobTitle=${encodeURIComponent(jobTitle)}`;
         });
     </script>

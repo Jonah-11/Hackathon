@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4; /* Light background for contrast */
+    background-color: #e1f6fc;
 }
 
 /* Header Styles */
@@ -16,23 +16,48 @@ header {
 
 .container1 {
     display: flex;
-    justify-content: space-between; /* Space between logo/title and navigation */
+    justify-content: space-between;
     align-items: center;
-    padding: 10px 20px; /* Padding for better spacing */
+    padding: 10px 20px;
+}
+
+/* Logo container should be a flex column to stack text */
+.logo {
+    display: flex;
+    align-items: center;
 }
 
 .logo img {
-    height: 50px; /* Logo height */
-    margin-right: 10px; /* Space between logo and text */
+    margin-right: 15px;
+    height: 50px;
 }
 
-.logo {
+.logo p {
+    margin: 0;
+    font-size: 1.5em;
+    color: white;
+    font-family: 'Dancing Script', cursive;
+}
+
+/* Container for the Work Finder text */
+.logo-text {
     display: flex;
-    align-items: center; /* Vertically center the items */
+    flex-direction: column; /* Stack the texts vertically */
+}
+
+.logo-text p:first-child {
+    margin-bottom: 5px; /* Adjust the spacing between Work Finder and subsidiary text */
+    font-size: 1.5em;
+    color: white;
+}
+
+.logo-text p:nth-child(2) {
+    font-size: 0.9em;
+    color: #ccc; /* Lighter color for the subsidiary text */
 }
 
 nav {
-    margin-left: auto; /* Push nav to the right */
+    margin-left: auto;
 }
 
 nav ul {
@@ -43,7 +68,7 @@ nav ul {
 
 nav ul li {
     display: inline;
-    margin-left: 15px; /* Space between navigation items */
+    margin-left: 15px;
 }
 
 nav ul li a {
@@ -53,7 +78,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: #f39c12; /* Golden color on hover */
+    color: #f39c12;
 }
 
 /* Form Styles */

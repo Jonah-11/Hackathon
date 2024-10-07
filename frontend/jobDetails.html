@@ -29,11 +29,14 @@
             <h2 id="jobTitle"></h2>
             <p><strong>Company:</strong> <span id="companyName"></span></p>
             <p><strong>Location:</strong> <span id="jobLocation"></span></p>
-            <p><strong>Salary:</strong> <span id="jobSalary"></span></p>
             <p><strong>Description:</strong> <span id="jobDescription"></span></p>
+            <p><strong>Contact Email:</strong> <span id="contactEmail"></span></p>
+            <p><strong>Contact Phone:</strong> <span id="contactPhone"></span></p>
+            <p><strong>Application Deadline:</strong> <span id="deadline"></span></p>
             <button id="applyButton">Apply Now</button>
         </div>
     </div>
+    
     
     <footer>
         <div class="footer-content">
@@ -62,13 +65,15 @@
 
         // Function to populate job details
         function populateJobDetails(job) {
-            // Add job information to the existing job details box
             document.getElementById('jobTitle').textContent = job.title || "Job Title Not Available";
             document.getElementById('companyName').textContent = job.company || "Company Not Specified";
             document.getElementById('jobLocation').textContent = job.location || "Location Not Provided";
-            document.getElementById('').textContent = job.salary || "Salary Not Listed";
             document.getElementById('jobDescription').textContent = job.description || "Description Not Available";
+            document.getElementById('contactEmail').textContent = job.contactEmail || "Email Not Provided";
+            document.getElementById('contactPhone').textContent = job.contactPhone || "Phone Not Listed";
+            document.getElementById('deadline').textContent = job.deadline || "Deadline Not Specified";
         }
+
 
         // Call the function to populate the job details on page load
         populateJobDetails(jobData);

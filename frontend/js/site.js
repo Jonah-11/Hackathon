@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const jobId = params.get('id');
 
         if (!jobId) {
-            document.getElementById('jobDetailsContainer').innerHTML = '<p>No job ID provided.</p>';
+            document.getElementById('jobDetails').innerHTML = '<p>No job ID provided.</p>';
             return;
         }
 
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const response = await fetch(`https://hackathon-production-c8fa.up.railway.app/jobListings/${jobId}`);
             if (response.ok) {
                 const job = await response.json();
-                document.getElementById('jobDetailsContainer').innerHTML = `
+                document.getElementById('jobDetails').innerHTML = `
                     <h2>${job.job_title || 'Job Title Not Available'}</h2>
                     <p><strong>Company:</strong> ${job.company_name || 'Company Not Specified'}</p>
                     <p><strong>Location:</strong> ${job.location || 'Location Not Provided'}</p>
@@ -121,15 +121,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p><strong>Description:</strong> ${job.job_description || 'No description available.'}</p>
                     <p><strong>Contact Email:</strong> ${job.contact_email || 'Email Not Provided'}</p>
                     <p><strong>Contact Phone:</strong> ${job.contact_phone || 'Phone Not Listed'}</p>
+                    <button id="applyButton">Apply Now</button>
                 `;
             } else {
-                document.getElementById('jobDetailsContainer').innerHTML = '<p>No job details available.</p>';
+                document.getElementById('jobDetails').innerHTML = '<p>No job details available.</p>';
             }
         } catch (error) {
             console.error('Error fetching job details:', error);
-            document.getElementById('jobDetailsContainer').innerHTML = '<p>An error occurred while fetching job details.</p>';
+            document.getElementById('jobDetails').innerHTML = '<p>An error occurred while fetching job details.</p>';
         }        
     }
+
 
     // Attach event listeners for forms and fetch job listings
     const jobForm = document.getElementById('jobForm');

@@ -5,6 +5,7 @@ const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
+const cron = require('node-cron'); // Import node-cron
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -39,6 +40,20 @@ const dbConfig = {
 
 // Initialize database connection pool
 const dbPool = mysql.createPool(dbConfig);
+
+// ------------------------ Scheduled Job Deletion ------------------------
+// Schedule the task to run daily at midnight
+cron.schedule('0 0 * * *', async () => {
+    try {
+        const query = 'DELETE FROM job_listings WHERE deadline < NOW()';
+        const connection = await dbPool.getConnection();
+        const [result] = await connection.execute(query);
+        connection.release();
+        console.log(`${result.affectedRows} job(s) deleted.`);
+    } catch (error) {
+        console.error('Error deleting expired job listings:', error);
+    }
+});
 
 // ------------------------ User Registration ------------------------
 app.post('/register', async (req, res) => {

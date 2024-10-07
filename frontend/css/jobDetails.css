@@ -23,6 +23,73 @@ header {
     color: white;
 }
 
+.container1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+/* Logo container should be a flex column to stack text */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    margin-right: 15px;
+    height: 50px;
+}
+
+.logo p {
+    margin: 0;
+    font-size: 1.5em;
+    color: white;
+    font-family: 'Dancing Script', cursive;
+}
+
+/* Container for the Work Finder text */
+.logo-text {
+    display: flex;
+    flex-direction: column; /* Stack the texts vertically */
+}
+
+.logo-text p:first-child {
+    margin-bottom: 5px; /* Adjust the spacing between Work Finder and subsidiary text */
+    font-size: 1.5em;
+    color: white;
+}
+
+.logo-text p:nth-child(2) {
+    font-size: 0.9em;
+    color: #ccc; /* Lighter color for the subsidiary text */
+}
+
+nav {
+    margin-left: auto;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #f39c12;
+}
+
 /* Main container for job details */
 #jobDetailsContainer {
     flex-grow: 1;
@@ -71,16 +138,16 @@ p {
 }
 
 /* Footer styles */
+/* Footer styles */
 footer {
     background-color: #2c3e50;
     color: #fff;
     padding: 20px 0;
     text-align: center;
     width: 100%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    /* Remove position: fixed and bottom properties */
 }
+
 
 .footer-content {
     display: flex;

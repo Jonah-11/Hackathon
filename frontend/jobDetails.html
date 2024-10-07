@@ -61,22 +61,5 @@
         <p>&copy; 2024 WorkFinder | All Rights Reserved</p>
     </footer>
     <script src="js/site.js"></script>
-    <script>
-
-        // Function to populate job details
-        function populateJobDetails(job) {
-            document.getElementById('jobTitle').textContent = job.title || "Job Title Not Available";
-            document.getElementById('companyName').textContent = job.company || "Company Not Specified";
-            document.getElementById('jobLocation').textContent = job.location || "Location Not Provided";
-            document.getElementById('jobDescription').textContent = job.description || "Description Not Available";
-            document.getElementById('contactEmail').textContent = job.contactEmail || "Email Not Provided";
-            document.getElementById('contactPhone').textContent = job.contactPhone || "Phone Not Listed";
-            document.getElementById('deadline').textContent = job.deadline || "Deadline Not Specified";
-        }
-
-
-        // Call the function to populate the job details on page load
-        populateJobDetails(jobData);
-    </script>
 </body>
 </html>

@@ -129,9 +129,8 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (error) {
             console.error('Error fetching job details:', error);
             document.getElementById('jobDetails').innerHTML = '<p>An error occurred while fetching job details.</p>';
-        }        
+        }
     }
-
 
     // Attach event listeners for forms and fetch job listings
     const jobForm = document.getElementById('jobForm');
@@ -148,24 +147,23 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('jobDetailsContainer')) {
         fetchJobDetails();
     }
-});
 
-// Set minimum date for deadline input
-const deadlineInput = document.getElementById('deadline');
-if (deadlineInput) {
-    const today = new Date().toISOString().split('T')[0]; // Get today's date in yyyy-mm-dd format
-    deadlineInput.setAttribute('min', today); // Set the minimum date to today
-}
+    // Set minimum date for deadline input
+    const deadlineInput = document.getElementById('deadline');
+    if (deadlineInput) {
+        const today = new Date().toISOString().split('T')[0]; // Get today's date in yyyy-mm-dd format
+        deadlineInput.setAttribute('min', today); // Set the minimum date to today
+    }
 
-const applyButton = document.getElementById('applyButton'); // Adjust the ID to match your button
-
-// Example job object (you'll get this dynamically from your job details)
-const job = {
-    email: 'company@example.com', // Replace with the actual company email dynamically
-    jobTitle: 'Software Engineer' // Replace with the actual job title dynamically
-};
-
-applyButton.addEventListener('click', () => {
-    const subject = `Job Application for ${job.jobTitle}`;
-    window.location.href = `mailto:${job.email}?subject=${encodeURIComponent(subject)}`;
+    const applyButton = document.getElementById('applyButton'); // Adjust the ID to match your button
+    if (applyButton) {
+        applyButton.addEventListener('click', function() {
+            const jobTitle = document.querySelector('#jobDetails h2').innerText; // Get the job title
+            const contactEmail = document.querySelector('#jobDetails p strong:contains("Contact Email:")').nextSibling.nodeValue.trim(); // Get the contact email
+            const subject = `Job Application for "${jobTitle}"`;
+            
+            // Open the email client
+            window.location.href = `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}`;
+        });
+    }
 });

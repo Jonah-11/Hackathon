@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
             if (response.ok) {
                 alert(data.message);
-                document.getElementById('jobForm').reset(); // Reset the form
+                document.getElementById('jobForm').reset(); // Reset the form 
             } else {
                 alert(data.error || 'Failed to create job listing.');
             }

@@ -32,7 +32,7 @@ header {
 }
 
 /* Job details box styling */
-#jobDetailsBox {
+.job-details-box {
     background-color: white;
     padding: 20px;
     border-radius: 15px; /* Rounded corners */

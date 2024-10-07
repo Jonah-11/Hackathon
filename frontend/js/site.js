@@ -114,11 +114,13 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 const job = await response.json();
                 document.getElementById('jobDetailsContainer').innerHTML = `
-                    <h2>${job.job_title}</h2>
-                    <p><strong>Company:</strong> ${job.company_name}</p>
-                    <p><strong>Location:</strong> ${job.location}</p>
+                    <h2>${job.job_title || 'Job Title Not Available'}</h2>
+                    <p><strong>Company:</strong> ${job.company_name || 'Company Not Specified'}</p>
+                    <p><strong>Location:</strong> ${job.location || 'Location Not Provided'}</p>
                     <p><strong>Deadline:</strong> ${job.deadline || 'No deadline specified'}</p>
                     <p><strong>Description:</strong> ${job.job_description || 'No description available.'}</p>
+                    <p><strong>Contact Email:</strong> ${job.contact_email || 'Email Not Provided'}</p>
+                    <p><strong>Contact Phone:</strong> ${job.contact_phone || 'Phone Not Listed'}</p>
                 `;
             } else {
                 document.getElementById('jobDetailsContainer').innerHTML = '<p>No job details available.</p>';
@@ -126,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (error) {
             console.error('Error fetching job details:', error);
             document.getElementById('jobDetailsContainer').innerHTML = '<p>An error occurred while fetching job details.</p>';
-        }
+        }        
     }
 
     // Attach event listeners for forms and fetch job listings

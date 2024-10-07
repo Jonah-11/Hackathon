@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Fetch job details based on job ID
+   // Fetch job details based on job ID
     async function fetchJobDetails() {
         const params = new URLSearchParams(window.location.search);
         const jobId = params.get('id');
@@ -123,6 +123,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p><strong>Contact Phone:</strong> ${job.contact_phone || 'Phone Not Listed'}</p>
                     <button id="applyButton">Apply Now</button>
                 `;
+
+                // Add the event listener here
+                const applyButton = document.getElementById('applyButton');
+                if (applyButton) {
+                    applyButton.addEventListener('click', function() {
+                        const jobTitle = job.job_title; // Use the job title from the fetched job
+                        const contactEmail = job.contact_email; // Get the contact email from the job object
+                        const subject = `Job Application for "${jobTitle}"`;
+                        
+                        // Open the email client
+                        window.location.href = `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}`;
+                    });
+                }
             } else {
                 document.getElementById('jobDetails').innerHTML = '<p>No job details available.</p>';
             }
@@ -131,6 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('jobDetails').innerHTML = '<p>An error occurred while fetching job details.</p>';
         }
     }
+
 
     // Attach event listeners for forms and fetch job listings
     const jobForm = document.getElementById('jobForm');
